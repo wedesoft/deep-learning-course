@@ -1,9 +1,11 @@
 \documentclass{article}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{cleveref}
+\usepackage{txfonts}
 
 \begin{document}
 \section{Neural Networks and Deep Learning}
@@ -71,6 +73,15 @@ The \emph{cost function} is the average of the loss function of the entire train
   J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})=
   -\frac{1}{m}\sum_{i=1}^m\big[y^{(i)}\log\widehat{y}^{(i)}+(1-y^{(i)})\log(1-\widehat{y}^{(i)})\big]
 \end{equation}
+
+Gradient descent iteratively minimizes $J(w,b)$ using partial derivatives of $J$.
+\begin{equation}
+  \begin{split}
+    w&\coloneqq w-\alpha\underbrace{\frac{\partial J(w,b)}{\partial w}}_{\eqqcolon dw}\\
+    b&\coloneqq b-\alpha\underbrace{\frac{\partial J(w,b)}{\partial b}}_{\eqqcolon db}
+  \end{split}
+\end{equation}
+$\alpha$ is the learning rate.
 
 \subsection{Basics of Neural Network programming}
 \subsection{One hidden layer Neural Network}
