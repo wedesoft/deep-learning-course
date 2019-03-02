@@ -2,6 +2,8 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{cleveref}
 
 \begin{document}
 \section{Neural Networks and Deep Learning}
@@ -46,6 +48,18 @@ The labels are
 \begin{equation}
   Y=\begin{pmatrix}y^{(1)} & y^{(2)} & \cdots & y^{(m)}\end{pmatrix}\in\mathbb{R}^{1\times m}
 \end{equation}
+
+Logistic regression tries to model the probability $\widehat{y}=P(y=1|x)$.
+The model has the parameters $w\in\mathbb{R}^{n_x}$ and $b\in\mathbb{R}$.
+The model is $\widehat{y}=\sigma(w^\top+b)$ using $\sigma(z)=\frac{1}{1+e^{-z}}$.
+Also see \cref{fig:sigmoid}.
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=.5\textwidth]{sigmoid}
+    \caption{The sigmoid activation function}
+    \label{fig:sigmoid}
+  \end{center}
+\end{figure}
 
 \subsection{Basics of Neural Network programming}
 \subsection{One hidden layer Neural Network}
