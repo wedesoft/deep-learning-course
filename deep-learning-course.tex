@@ -38,6 +38,7 @@ Geoffrey Hinton's advice:
 \item never stop programming
 \end{itemize}
 
+\subsection{Basics of Neural Network programming}
 \subsubsection{Binary Classification}
 Logistic regression is an algorithm for binary classification (e.g. y=1 (cat) vs y=0 (no cat)).
 The training set consists of samples $(x,y)$ with $x\in\mathbb{R}^{n_x}$ and $y\in\{0,1\}$.
@@ -63,6 +64,7 @@ Also see \cref{fig:sigmoid}.
   \end{center}
 \end{figure}
 
+\subsubsection{Cost function}
 The logistic regression \emph{loss function} computes the error for a single training example.
 \begin{equation}
   \mathcal{L}(\widehat{y},y)=-\big(y\log\widehat{y}+(1-y)\log(1-\widehat{y})\big)
@@ -74,6 +76,7 @@ The \emph{cost function} is the average of the loss function of the entire train
   -\frac{1}{m}\sum_{i=1}^m\big[y^{(i)}\log\widehat{y}^{(i)}+(1-y^{(i)})\log(1-\widehat{y}^{(i)})\big]
 \end{equation}
 
+\subsubsection{Gradient descent}
 Gradient descent iteratively minimizes $J(w,b)$ using partial derivatives of $J$.
 \begin{equation}
   \begin{split}
@@ -104,7 +107,20 @@ The update rule for gradient descent then is
   \end{split}
 \end{equation}
 
-\subsection{Basics of Neural Network programming}
+\subsubsection{Logistic regression on $m$ examples}
+Logistic regression over multiple training examples works by simply summing up the derivatives.
+\begin{equation}
+  \frac{\partial}{\partial w_1}J(w,b)=\frac{1}{m}\sum_{i=1}^m\underbrace{\frac{\partial}{\partial w_1}\mathcal{L}(a^{(i)},y^{(i)})}_{dw_1^{(i)}}
+\end{equation}
+See \cref{fig:logistic-regression} for more detail.
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{logistic-regression}
+    \caption{Logistic regression on $m$ examples}
+    \label{fig:logistic-regression}
+  \end{center}
+\end{figure}
+
 \subsection{One hidden layer Neural Network}
 \subsection{Deep Neural Networks}
 
