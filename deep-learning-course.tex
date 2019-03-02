@@ -83,6 +83,27 @@ Gradient descent iteratively minimizes $J(w,b)$ using partial derivatives of $J$
 \end{equation}
 $\alpha$ is the learning rate.
 
+Derivative chain-rule: $\frac{df(g(x))}{dx}=\frac{df}{dg}\frac{dg}{dx}$.
+In the source code $\frac{dJ}{dv}$ is named ``dv'' where $J$ is the final output variable.
+
+In the case of logistic regression with two features $z=w_1x_1+w_2x_2+b$ and $a=\sigma(z)$.
+\begin{equation}
+  \begin{split}
+    \frac{d\mathcal{L}(a,y)}{da}&=-\frac{y}{a}+\frac{1-y}{1-a}\\
+    \frac{da}{dz}&=a(1-a)\\
+    ``dz''=\frac{d\mathcal{L}}{dz}&=\frac{d\mathcal{L}}{da}\frac{da}{dz}=a-y
+  \end{split}
+\end{equation}
+$\frac{d\mathcal{L}}{dw_1}=``dw_1''=x_1 dz$, $``dw_2''=x_2dz$, and $``db''=dz$.
+The update rule for gradient descent then is
+\begin{equation}
+  \begin{split}
+    w_1&\coloneqq w_1-\alpha dw_1\\
+    w_2&\coloneqq w_2-\alpha dw_2\\
+    b&\coloneqq b-\alpha db\\
+  \end{split}
+\end{equation}
+
 \subsection{Basics of Neural Network programming}
 \subsection{One hidden layer Neural Network}
 \subsection{Deep Neural Networks}
