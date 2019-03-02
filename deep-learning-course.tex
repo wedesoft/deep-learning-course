@@ -51,7 +51,7 @@ The labels are
 
 Logistic regression tries to model the probability $\widehat{y}=P(y=1|x)$.
 The model has the parameters $w\in\mathbb{R}^{n_x}$ and $b\in\mathbb{R}$.
-The model is $\widehat{y}=\sigma(w^\top+b)$ using $\sigma(z)=\frac{1}{1+e^{-z}}$.
+The model is $\widehat{y}^{(i)}=\sigma(w^\top x^{(i)}+b)$ using $\sigma(z^{(i)})=\frac{1}{1+e^{-z^{(i)}}}$.
 Also see \cref{fig:sigmoid}.
 \begin{figure}[htbp]
   \begin{center}
@@ -60,6 +60,17 @@ Also see \cref{fig:sigmoid}.
     \label{fig:sigmoid}
   \end{center}
 \end{figure}
+
+The logistic regression \emph{loss function} computes the error for a single training example.
+\begin{equation}
+  \mathcal{L}(\widehat{y},y)=-\big(y\log\widehat{y}+(1-y)\log(1-\widehat{y})\big)
+\end{equation}
+with $y\in\{0,1\}$.
+The \emph{cost function} is the average of the loss function of the entire training set.
+\begin{equation}
+  J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})=
+  -\frac{1}{m}\sum_{i=1}^m\big[y^{(i)}\log\widehat{y}^{(i)}+(1-y^{(i)})\log(1-\widehat{y}^{(i)})\big]
+\end{equation}
 
 \subsection{Basics of Neural Network programming}
 \subsection{One hidden layer Neural Network}
