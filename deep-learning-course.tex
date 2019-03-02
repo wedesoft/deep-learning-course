@@ -1,4 +1,6 @@
 \documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
 \usepackage{hyperref}
 
 \begin{document}
@@ -31,6 +33,19 @@ Geoffrey Hinton's advice:
 \item trust your intuitions
 \item never stop programming
 \end{itemize}
+
+\subsubsection{Binary Classification}
+Logistic regression is an algorithm for binary classification (e.g. y=1 (cat) vs y=0 (no cat)).
+The training set consists of samples $(x,y)$ with $x\in\mathbb{R}^{n_x}$ and $y\in\{0,1\}$.
+The training set is $(x^{(1)},y^{(1)}), (x^{(2)},y^{(2)}), \ldots, (x^{(m)},y^{(m)})$ with $m=m_{train}$ (or $m=m_{test}$ for the test set).
+The training set is represented by the matrix
+\begin{equation}
+  X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}\in\mathbb{R}^{n_x\times m}
+\end{equation}
+The labels are
+\begin{equation}
+  Y=\begin{pmatrix}y^{(1)} & y^{(2)} & \cdots & y^{(m)}\end{pmatrix}\in\mathbb{R}^{1\times m}
+\end{equation}
 
 \subsection{Basics of Neural Network programming}
 \subsection{One hidden layer Neural Network}
