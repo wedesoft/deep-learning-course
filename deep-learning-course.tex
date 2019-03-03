@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{cleveref}
 \usepackage{txfonts}
+\usepackage{minted}
 
 \begin{document}
 \section{Neural Networks and Deep Learning}
@@ -120,6 +121,80 @@ See \cref{fig:logistic-regression} for more detail.
     \label{fig:logistic-regression}
   \end{center}
 \end{figure}
+
+\subsubsection{Vectorizing Logistic Regression}
+\begin{minted}{python}
+# Examples for vectorized code
+import numpy as np
+u = np.dot(A, v)
+u = np.exp(v)
+np.log(v)
+np.maximum(v, o)
+v ** 2
+\end{minted}
+
+\begin{equation}
+  Z=\begin{bmatrix}z^{(1)} & z^{(2)} & \cdots & z^{(m)}\end{bmatrix}=
+    w^\top X + \underbrace{\begin{bmatrix}b & b & \cdots & b\end{bmatrix}}_{\in\mathbb{R}^{1\times m}}
+\end{equation}
+
+In Python:
+\begin{minted}{python}
+  Z=np.dot(w.T, x)+b
+\end{minted}
+
+\begin{equation}
+  A=\begin{bmatrix}a^{(1)} & a^{(2)} & \cdots & a^{(m)}\end{bmatrix}=\sigma(Z)
+\end{equation}
+
+\begin{equation}
+  dZ=\begin{bmatrix}dz^{(1)} & dz^{(2)} & \cdots & dz^{(m)}\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+  dZ=A-Y
+\end{equation}
+
+\begin{equation}
+  db=\frac{1}{m}\sum_{i=1}^m dz^{(i)}
+\end{equation}
+
+\begin{minted}{python}
+  db=np.sum(dZ)/m
+\end{minted}
+
+\begin{equation}
+  dw=\frac{1}{m}X dz^\top
+\end{equation}
+
+\begin{equation}
+  \begin{split}
+    w &\coloneqq w-\alpha dw\\
+    b &\coloneqq b-\alpha db
+  \end{split}
+\end{equation}
+
+\subsubsection{Logistic Regression Cost Function}
+The two cases
+\begin{itemize}
+  \item if $y=1$: $p(y|x)=\widehat{y}$
+  \item if $y=0$: $p(y|x)=1-\widehat{y}$
+\end{itemize}
+can be expressed as one equation: $p(y|x)=\widehat{y}^y(1-\widehat{y})^{(1-y)}$.
+Then
+\begin{equation}
+  \log p(y|x)=y\log\widehat{y}+(1-y)
+\end{equation}
+
+Overall log-probability to maximise (maximum likelihood)
+\begin{equation}
+  \log\prod_{i=1}^m p(y^{(i)}|x^{(i)})=\sum_{i=1}^m \underbrace{\log p(y^{(i)}|x^{(i)})}_{-\mathcal{L}(y^{(i)}|x^{(i)})}
+\end{equation}
+I.e. minimize the negative value
+\begin{equation}
+  J(w,b)=\frac{1}{m}\sum_{i=1}^m \mathcal{L}(y^{(i)}|x^{(i)})
+\end{equation}
+which is the cost function.
 
 \subsection{One hidden layer Neural Network}
 \subsection{Deep Neural Networks}
