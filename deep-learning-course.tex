@@ -160,7 +160,10 @@ In Python:
 \end{equation}
 
 \begin{minted}{python}
-  db=np.sum(dZ)/m
+A = sigmoid(np.dot(w.T, X) + b)
+cost = -np.sum(Y * np.log(A) + (1 - Y) * np.log(1 - A)) / m
+dw = np.dot(X, (A - Y).T) / m
+db = np.sum(A - Y) / m
 \end{minted}
 
 \begin{equation}
@@ -197,8 +200,77 @@ I.e. minimize the negative value
 which is the cost function.
 
 \subsection{One hidden layer Neural Network}
-\subsection{Deep Neural Networks}
+\subsubsection{Neural Network Overview}
+\begin{equation}
+  \begin{split}a
+    z&=w^\top x+b\\
+    a&=\sigma(z)\\
+    \mathcal{L}(a,y)&=-y\log(a)-(1-y)\log(1-a)
+  \end{split}
+\end{equation}
 
+In a neural network with one hidden layer we have:
+\begin{equation}
+  \begin{split}
+    z^{[1]}&=W^{[1]}x+b^{[1]}\\
+    a^{[1]}&=\sigma(z^{[1]})\\
+    z^{[2]}&=W^{[2]}z^{[1]}+b^{[2]}\\
+    a^{[2]}&=\sigma(z^{[2]})\\
+    \mathcal{L}(a^{[2]},y)&=-y\log(a^{[2]})-(1-y)\log(1-a^{[2]})
+  \end{split}
+\end{equation}
+
+\subsubsection{Neural Network Representation}
+There is
+\begin{itemize}
+  \item an input layer $a^{[0]}=x$ ($x_1, x_2, \ldots)$
+  \item zero, one, or more hidden layer(s) $a^{[l]}$ with $l\in\{1,2,\ldots,L-1\}$
+  \item an output layer $\widehat{y}=a^{[L]}$
+\end{itemize}
+Only the input layer is not counted, \emph{e.g.} a 2 layer neural network has 1 hidden layer.
+\begin{equation}
+  W^{[l]}=
+  \begin{pmatrix}
+  w^{[l]\top}_1\\
+  w^{[l]\top}_2\\
+  \vdots
+  \end{pmatrix}
+\end{equation}
+
+\subsubsection{Vectorizing across multiple examples}
+\begin{equation}
+  \begin{split}
+    x^{(1)}&\to a^{[L](1)}=\widehat{y}^{(1)}\\
+    x^{(2)}&\to a^{[L](2)}=\widehat{y}^{(2)}\\
+    &\vdots\\
+    x^{(m)}&\to a^{[L](m)}=\widehat{y}^{(m)}
+  \end{split}
+\end{equation}
+The computation of multiple training examples is vectorized using
+\begin{equation}
+  X=\begin{pmatrix}x^{(1)} & x^{(2)} & \cdots & x^{(m)}\end{pmatrix}\in\mathbb{R}^{n_x\times m}
+\end{equation}
+(by stacking vectors horizontally) as follows
+\begin{equation}
+  \begin{split}
+    Z^{[1]}&=W^{[1]}X+b^{[1]}\\
+    A^{[1]}&=\sigma(Z^{[1]})\\
+    Z^{[2]}&=W^{[2]}Z^{[1]}+b^{[2]}\\
+    A^{[2]}&=\sigma(Z^{[2]})
+  \end{split}
+\end{equation}
+
+\subsubsection{Activation Functions}
+\begin{itemize}
+  \item $\sigma(z)=\frac{1}{1+e^{-z}}\in[0,1]$
+  \item $\tanh z=\frac{e^z-e^{-z}}{e^z+e^{-z}}\in[-1,1]$
+  \item $\operatorname{ReLU}(z)=\max(0, z)$
+\end{itemize}
+
+The $\tanh$ function generally is better than $\sigma$ because the mean of the output is zero.
+One exception is the output layer where inputs between zero and one are desirable.
+
+\subsection{Deep Neural Networks}
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
