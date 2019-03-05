@@ -255,7 +255,7 @@ The computation of multiple training examples is vectorized using
   \begin{split}
     Z^{[1]}&=W^{[1]}X+b^{[1]}\\
     A^{[1]}&=\sigma(Z^{[1]})\\
-    Z^{[2]}&=W^{[2]}Z^{[1]}+b^{[2]}\\
+    Z^{[2]}&=W^{[2]}A^{[1]}+b^{[2]}\\
     A^{[2]}&=\sigma(Z^{[2]})
   \end{split}
 \end{equation}
@@ -280,6 +280,29 @@ One exception is the output layer where inputs between zero and one are desirabl
 \begin{equation}
   g(z)=\max(0, z)\to g^\prime(z)=\left\{\begin{array}{ll}0&\mathrm{\ if\ }z<0\\1&\mathrm{\ if\ }z>0\end{array}\right.
 \end{equation}
+
+\subsubsection{Gradient descent for neural networks}
+Forward propagation:
+\begin{equation}
+  \begin{split}
+    Z^{[1]}&=W^{[1]}X+b^{[1]}\\
+    A^{[1]}&=g^{[1]}(Z^{[1]})\\
+    Z^{[2]}&=W^{[2]}A^{[1]}+b^{[2]}\\
+    A^{[2]}&=g^{[2]}(Z^{[2]})=\sigma(Z^{[2]})
+  \end{split}
+\end{equation}
+Backpropagation:
+\begin{equation}
+  \begin{split}
+    dZ^{[2]}&=A^{[2]}-Y\\
+    dW^{[2]}&=\frac{1}{m}dZ^{[2]}A^{[1]\top}\\
+    db^{[2]}&=\frac{1}{m}\sum_i dZ^{[2](i)}\\
+    dZ^{[1]}&=W^{[2]\top}dZ^{[2]}*g^{[1]\prime}(Z^{[1]})\\
+    dW^{[1]}&=\frac{1}{m}dZ^{[1]}X\\
+    db^{[1]}&=\frac{1}{m}\sum_i dZ^{[1](i)}
+  \end{split}
+\end{equation}
+
 
 \subsection{Deep Neural Networks}
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
