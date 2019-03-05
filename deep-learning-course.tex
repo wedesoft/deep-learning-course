@@ -270,6 +270,17 @@ The computation of multiple training examples is vectorized using
 The $\tanh$ function generally is better than $\sigma$ because the mean of the output is zero.
 One exception is the output layer where inputs between zero and one are desirable.
 
+\subsubsection{Derivatives of Activation Functions}
+\begin{equation}
+  g(z)=\frac{1}{1+e^{-z}}\to g^\prime(z)=g(z)(1-g(z))
+\end{equation}
+\begin{equation}
+  g(z)=\tanh{z}\to g^\prime(z)=1-\big(g(z)\big)^2
+\end{equation}
+\begin{equation}
+  g(z)=\max(0, z)\to g^\prime(z)=\left\{\begin{array}{ll}0&\mathrm{\ if\ }z<0\\1&\mathrm{\ if\ }z>0\end{array}\right.
+\end{equation}
+
 \subsection{Deep Neural Networks}
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
 \section{Structuring Machine Learning Projects}
