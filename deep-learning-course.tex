@@ -186,7 +186,7 @@ The two cases
 can be expressed as one equation: $p(y|x)=\widehat{y}^y(1-\widehat{y})^{(1-y)}$.
 Then
 \begin{equation}
-  \log p(y|x)=y\log\widehat{y}+(1-y)
+  \log p(y|x)=y\log\widehat{y}+(1-y)\log(1-\widehat{y})
 \end{equation}
 
 Overall log-probability to maximise (maximum likelihood)
@@ -198,6 +198,8 @@ I.e. minimize the negative value
   J(w,b)=\frac{1}{m}\sum_{i=1}^m \mathcal{L}(y^{(i)}|x^{(i)})
 \end{equation}
 which is the cost function.
+
+Interview with Pieter Abbeel on reinforcement learning applied to robotics.
 
 \subsection{One hidden layer Neural Network}
 \subsubsection{Neural Network Overview}
@@ -302,9 +304,22 @@ Backpropagation:
     db^{[1]}&=\frac{1}{m}\sum_i dZ^{[1](i)}
   \end{split}
 \end{equation}
+where ``*'' denotes the elementwise product.
 
+\subsubsection{Random Initialization}
+Initializing the weights of a neural network to zero is not sufficient.
+The activations will be the same.
+By initializing the weights randomly, one can ensure that they are linear independent.
+\emph{I.e.} it is necessary to break the symmetry.
+Usually the weights are initialised to small random values using a Gaussian random distribution with \emph{e.g.} $\sigma=0.01$.
+The bias units can be initialised to zero.
+
+Interview with Ian Goodfellow (Generative Adversarial Neural Networks).
+His advice: apply the knowledge to something you are interested in, while learning from the book/online lectures.
 
 \subsection{Deep Neural Networks}
+
+
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
