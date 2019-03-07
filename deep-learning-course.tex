@@ -216,7 +216,7 @@ In a neural network with one hidden layer we have:
   \begin{split}
     z^{[1]}&=W^{[1]}x+b^{[1]}\\
     a^{[1]}&=\sigma(z^{[1]})\\
-    z^{[2]}&=W^{[2]}z^{[1]}+b^{[2]}\\
+    z^{[2]}&=W^{[2]}a^{[1]}+b^{[2]}\\
     a^{[2]}&=\sigma(z^{[2]})\\
     \mathcal{L}(a^{[2]},y)&=-y\log(a^{[2]})-(1-y)\log(1-a^{[2]})
   \end{split}
@@ -318,7 +318,44 @@ Interview with Ian Goodfellow (Generative Adversarial Neural Networks).
 His advice: apply the knowledge to something you are interested in, while learning from the book/online lectures.
 
 \subsection{Deep Neural Networks}
+Logistic regression is a ``shallow'' neural network.
+A neural network with 5 layers can be called a ``deep'' neural network.
+\begin{itemize}
+  \item $L$ is the number of layers.
+  \item $n^{[l]}$ is the number of units in layer $l$.
+  \item $n^{[0]}=n_x$ is the number of input units.
+  \item $a^{[l]}=g^{[l]}(z^{[l]})$ is the activation at layer $l$
+  \item $a^{[0]}=x$ is the input
+  \item $a^{[L]}=\widehat{y}$ is the output
+  \item $z^{[l]}=W^{[l]}a^{[l-1]}+b^{[l]}$
+\end{itemize}
 
+\subsubsection{Forward propagation in a deep network}
+\begin{equation}
+  \begin{split}
+    z^{[1]}&=W^{[1]}x+b^{[1]}\\
+    a^{[1]}&=g^{[1]}(z^{[1]})\\
+    z^{[2]}&=W^{[2]}a^{[1]}+b^{[2]}\\
+    a^{[2]}&=g^{[2]}(z^{[2]})\\
+    &\vdots\\
+    z^{[L]}&=W^{[L]}a^{[L-1]}+b^{[L]}\\
+    \widehat{y}&=g^{[L]}(z^{[L]})
+  \end{split}
+\end{equation}
+Using $a^{[0]}=x$ and $a^{[L]}=\widehat{y}$ one can write in general:
+\begin{equation}
+  \begin{split}
+    z^{[l]}&=W^{[l]}a^{[l-1]}+b^{[l]}\\
+    a^{[l]}&=g^{[l]}(z^{[l]})
+  \end{split}
+\end{equation}
+The vectorized form for a training set (by stacking training examples horizontally):
+\begin{equation}
+  \begin{split}
+    Z^{[l]}&=W^{[l]}A^{[l-1]}+b^{[l]}\\
+    A^{[l]}&=g^{[l]}(Z^{[l]})
+  \end{split}
+\end{equation}
 
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
 \section{Structuring Machine Learning Projects}
