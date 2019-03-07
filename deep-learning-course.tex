@@ -283,7 +283,7 @@ One exception is the output layer where inputs between zero and one are desirabl
   g(z)=\max(0, z)\to g^\prime(z)=\left\{\begin{array}{ll}0&\mathrm{\ if\ }z<0\\1&\mathrm{\ if\ }z>0\end{array}\right.
 \end{equation}
 
-\subsubsection{Gradient descent for neural networks}
+\subsubsection{Gradient descent for neural networks}\label{cha:gradneural}
 Forward propagation:
 \begin{equation}
   \begin{split}
@@ -380,6 +380,70 @@ See \cref{fig:deepblocks}.
     \label{fig:deepblocks}
   \end{center}
 \end{figure}
+
+\subsubsection{Forward and Backward Propagation}
+\textbf{Forward propagation} for layer $l$:
+\begin{itemize}
+  \item Input: $a^{[l-1]}$
+  \item Output: $a^{[l]}$, cache: $z^{[l]}$
+\end{itemize}
+The implementation is
+\begin{equation}
+  \begin{split}
+    z^{[l]}&=W^{[l]}a^{[l-1]}+b^{[l]}\\
+    a^{[l]}&=g^{[l]}(z^{[l]})
+  \end{split}
+\end{equation}
+The vectorized version simply is
+\begin{equation}
+  \begin{split}
+    Z^{[l]}&=W^{[l]}A^{[l-1]}+b^{[l]}\\
+    A^{[l]}&=g^{[l]}(Z^{[l]})
+  \end{split}
+\end{equation}
+where $A^{[0]}=X$.
+
+\textbf{Backward propagation} for layer $l$:
+\begin{itemize}
+  \item Input: $da^{[l]}$, cached: $z^{[l]}$
+  \item Output: $da^{[l-1]}$, $dW^{[l]}$, $db^{[l]}$
+\end{itemize}
+The implementation is
+\begin{equation}
+  \begin{split}
+    dz^{[l]}&=da^{[l]}*g^{[l]\prime}(z^{[l]})\\
+    dW^{[l]}&=dz^{[l]}a^{[l-1]}\\
+    db^{[l]}&=dz^{[l]}\\
+    da^{[l-1]}&=W^{[l]\top}dz^{[l]}
+  \end{split}
+\end{equation}
+where $da^{[L]}=-\frac{y}{a}+\frac{1-y}{1-a}$.
+Note that $dz^{[l]}=W^{[l+1]\top}dz^{[l+1]}*g^{[l]\prime}(z^{[l]})$ similar as in \cref{cha:gradneural}.
+The vectorized version is
+\begin{equation}
+  \begin{split}
+    dZ^{[l]}&=dA^{[l]}*g^{[l]\prime}(Z^{[l]})\\
+    dW^{[l]}&=\frac{1}{m}dZ^{[l]}A^{[l-1]\top}\\
+    db^{[l]}&=\frac{1}{m}\sum_i dZ^{[l](i)}=\frac{1}{m}np.sum(dZ^{[l]}, axis=1,keepdims=True)\\
+    dA^{[l-1]}&=W^{[l]\top}dZ^{[l]}
+  \end{split}
+\end{equation}
+where $dA^{[L]}=\sum_{i=1}^m-\frac{y^{(i)}}{a^{(i)}}+\frac{1-y^{(i)}}{1-a^{(i)}}$.
+
+\subsubsection{Parameters vs. Hyperparameters}
+$W^{[l]}$ and $b^{[l]}$ with $l\in\{1,2,\ldots,L\}$ are parameters.
+Hyperparameters are:
+\begin{itemize}
+  \item learning rate $\alpha$
+  \item number of iterations
+  \item number of layers $L$
+  \item number of hidden units in each layer
+  \item choice of activation function
+  \item momentum
+  \item minibatch size
+  \item regularization parameters
+\end{itemize}
+Hyperparameters determine the value of the parameters.
 
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
 \section{Structuring Machine Learning Projects}
