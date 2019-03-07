@@ -357,6 +357,30 @@ The vectorized form for a training set (by stacking training examples horizontal
   \end{split}
 \end{equation}
 
+\subsubsection{Getting your matrix dimensions right}
+The matrix dimensions are as follows:
+\begin{itemize}
+  \item $W^{[l]}\in\mathbb{R}^{n^{[l]}\times n^{[l-1]}}$
+  \item $b^{[l]}\in\mathbb{R}^{n^{[l]}\times 1}$
+  \item $z^{[l]},a^{[l]},dz^{[l]},da^{[l]}\in\mathbb{R}^{n^{[l]}\times 1}$
+  \item $Z^{[l]},A^{[l]},dZ^{[l]},dA^{[l]}\in\mathbb{R}^{n^{[l]}\times m}$
+\end{itemize}
+
+\subsubsection{Why deep representations}
+Using the example of learning $x_1\operatorname{xor}x_2\operatorname{xor}\ldots x_n$ one can show that
+it can be represented using a deep neural network with $O(\log n)$ layers and $O(n)$ units.
+When using only one hidden layer, $O(2^n)$ units are required.
+
+\subsubsection{Building blocks of of deep neural networks}
+See \cref{fig:deepblocks}.
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth]{deepblocks}
+    \caption{Building blocks of deep neural network}
+    \label{fig:deepblocks}
+  \end{center}
+\end{figure}
+
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
