@@ -446,6 +446,22 @@ Hyperparameters are:
 Hyperparameters determine the value of the parameters.
 
 \section{Improving Deep Neural Networks: Hyperparameter tuning, Regularisation}
+\subsection{Setting up your machine learning application}
+\subsubsection{Train / Dev / Test sets}
+Split up your data randomly into
+\begin{itemize}
+  \item training set
+  \item hold-out cross-validation set (development set)
+  \item test set
+\end{itemize}
+Traditionally the split was 60\%/20\%,20\% for data sets with 100, 1000, or 10000 samples.
+In the modern big data era (1000000 samples) the split can be 98\%/1\%/1\%.
+
+A common problem is a mismatched train/test distribution.
+A rule of thumb is to ensure that dev and test set are from the same distribution.
+
+Not having a test set might be okay (if no unbiased estimate is needed).
+
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
