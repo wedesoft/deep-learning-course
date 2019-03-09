@@ -504,12 +504,32 @@ $\lambda$ is the regularization parameter.
 When using a neural network, regularization is implemented as follows
 \begin{equation}
   J(W^{[1]},b^{[1]},\ldots,W^{[L]},b^{[L]})=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})
-  +\frac{\lambda}{2m}\sum_{l=1}^L||W^{[l]}||^2
+  +\frac{\lambda}{2m}\sum_{l=1}^L||W^{[l]}||_F^2
 \end{equation}
-where $||W^{[l]}||^2=\sum_{i=1}^{n^{[l]}}\sum_{j=1}^{n^{[l-1]}}(W^{[l]}_{ij})^2$ (Frobenius norm) and
+where $||W^{[l]}||_F^2=\sum_{i=1}^{n^{[l]}}\sum_{j=1}^{n^{[l-1]}}(W^{[l]}_{ij})^2$ (Frobenius norm) and
 $W^{[l]}\in\mathbb{R}^{n^{[l]}\times n^{[l-1]}}$.
 It follows that $dW^{[l]}=(\mathrm{from\ backprop})+\frac{\lambda}{m}W^{[l]}$.
 $L_2$ regularization sometimes is also called ``weight decay''.
+
+\subsubsection{Dropout regularization}
+Dropout randomly eliminates units from the network during training.
+Dropout can be implemented using ``inverted dropout''.
+\emph{E.g.} for layer 3 using keep\_prob=0.8.
+\begin{minted}{python}
+d3=np.random.rand(a3.shape[0], a3.shape[1]) < keep_prob
+\end{minted}
+The activations a3 are multiplied with the resulting boolean array.
+\begin{minted}{python}
+a3=np.multiply(a3, d3)  # a3 *= d3
+a3 /= keep_prob
+\end{minted}
+Note that a3 is scaled so that the expected value for $Z^{[4]}$ does not change.
+At test time dropout is \emph{not used}.
+keep\_prob can have different values for each layer.
+
+\subsubsection{Why does drop-out work?}
+Intuition: Each unit can't rely on any one feature, so have to spread out weights.
+The downside of dropout is that the cost function $J$ is not well defined any more.
 
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
