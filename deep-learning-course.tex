@@ -531,6 +531,19 @@ keep\_prob can have different values for each layer.
 Intuition: Each unit can't rely on any one feature, so have to spread out weights.
 The downside of dropout is that the cost function $J$ is not well defined any more.
 
+\subsubsection{Other regularization methods}
+\textbf{Data augmentation:}
+\begin{itemize}
+  \item given images one can flip them horizontally to double the data available
+  \item one can crop images or randomly distort or rotate them to synthesize more images
+\end{itemize}
+\textbf{Early stopping:}
+The training and dev set error are plotted.
+Usually the dev set error while go down for a while and then eventually increases from there.
+One can stop before the dev set error goes up.
+The downside of early stopping is that the tasks of minimizing $J$ and not overfitting are coupled
+and cannot be worked on independently any more.
+
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
