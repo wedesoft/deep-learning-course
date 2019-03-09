@@ -5,6 +5,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{cleveref}
+\usepackage{booktabs}
 \usepackage{txfonts}
 \usepackage{minted}
 
@@ -454,13 +455,61 @@ Split up your data randomly into
   \item hold-out cross-validation set (development set)
   \item test set
 \end{itemize}
-Traditionally the split was 60\%/20\%,20\% for data sets with 100, 1000, or 10000 samples.
+Traditionally the split was 60\%/20\%/20\% for data sets with 100, 1000, or 10000 samples.
 In the modern big data era (1000000 samples) the split can be 98\%/1\%/1\%.
 
 A common problem is a mismatched train/test distribution.
 A rule of thumb is to ensure that dev and test set are from the same distribution.
 
 Not having a test set might be okay (if no unbiased estimate is needed).
+
+\subsubsection{Bias/Variance}
+The training and dev set error are the main indicator to distinguish between
+bias (underfitting) and variance (overfitting) (see \cref{tbl:biasvariance})
+\begin{table}[htbp]
+  \begin{center}
+    \begin{tabular}{crrrr}\toprule
+      \textbf{train set performance} &  1\% & 15\% & 15\% & 0.5\%\\
+      \textbf{dev set performance}   & 11\% & 16\% & 30\% & 1\%\\\midrule
+      & high variance & high bias & both high & both low\\\bottomrule
+    \end{tabular}
+    \caption{Examples of bias and variance\label{tbl:biasvariance}}
+  \end{center}
+\end{table}
+
+\subsubsection{Basic Recipe for Machine Learning}
+When encountering high \emph{bias}:
+\begin{itemize}
+  \item bigger network
+  \item train longer
+  \item neural network architecture search
+\end{itemize}
+When encountering high \emph{variance}:
+\begin{itemize}
+  \item more data
+  \item regularization
+  \item neural network architecture search
+\end{itemize}
+
+\subsection{Regularizing your neural network}
+\subsubsection{Regularization}
+When using logistic regression with $L_2$ regularization one minimizes
+\begin{equation}
+  J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})+\frac{\lambda}{2m}||w||_2^2
+\end{equation}
+where $w\in\mathbb{R}^{n_x}$, $b\in\mathbb{R}$, and $||w||_2^2=\sum_{j=1}^{n_x}w_j^2=w^\top w$
+(\emph{i.e.} using the $L_2$ norm).
+$\lambda$ is the regularization parameter.
+
+When using a neural network, regularization is implemented as follows
+\begin{equation}
+  J(W^{[1]},b^{[1]},\ldots,W^{[L]},b^{[L]})=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})
+  +\frac{\lambda}{2m}\sum_{l=1}^L||W^{[l]}||^2
+\end{equation}
+where $||W^{[l]}||^2=\sum_{i=1}^{n^{[l]}}\sum_{j=1}^{n^{[l-1]}}(W^{[l]}_{ij})^2$ (Frobenius norm) and
+$W^{[l]}\in\mathbb{R}^{n^{[l]}\times n^{[l-1]}}$.
+It follows that $dW^{[l]}=(\mathrm{from\ backprop})+\frac{\lambda}{m}W^{[l]}$.
+$L_2$ regularization sometimes is also called ``weight decay''.
 
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
