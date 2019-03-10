@@ -544,6 +544,32 @@ One can stop before the dev set error goes up.
 The downside of early stopping is that the tasks of minimizing $J$ and not overfitting are coupled
 and cannot be worked on independently any more.
 
+\subsection{Setting up your optimization problem}
+\subsubsection{Normalizing Inputs}
+Normalizing the inputs consists of two steps:
+\begin{enumerate}
+  \item subtract the mean $\mu = \frac{1}{m}\sum_{i=1}^m x^{(i)}$
+  \item normalize the variance $\sigma^2=\frac{1}{m}\sum_{i=1}^m(x^{(i)}-\mu)^2$
+\end{enumerate}
+Note that you should use the same $\mu$ and $\sigma$ for the test set as you use for the training set.
+Normalizing the input features improves the symmetry of the cost function and allows you to use a faster learning rate.
+
+\subsubsection{Vanishing/Exploding Gradients}
+The slopes in deep networks can get very large or very small.
+
+\subsubsection{Weight Initialization for Deep Networks}
+The weights for a single neuron $z=w_1x_1+w_2x_2+\ldots+w_nx_n$ should be initialised with $Var(w_i)=\frac{2}{n}$.
+\begin{equation}
+  W^{[l]}=np.random.randn(shape)*np.sqrt(\frac{2}{n^{[l-1]}})
+\end{equation}
+where $n^{[l-1]}$ is the number of inputs for layer $l$.
+The optimal variance depends on the activation function.
+\begin{itemize}
+  \item for $\tanh$ use variance of $\sqrt{\frac{1}{n^{[l-1]}}}$
+  \item for ReLU use variance of $\sqrt{\frac{2}{n^{[l-1]}}}$
+\end{itemize}
+The variance for random initialisation can also be a hyperparameter to optimize.
+
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
