@@ -570,6 +570,28 @@ The optimal variance depends on the activation function.
 \end{itemize}
 The variance for random initialisation can also be a hyperparameter to optimize.
 
+\subsubsection{Numerical approximation of gradients}
+$f^\prime(\theta)$ can be estimated using
+$f^\prime(\theta)\approx\frac{f(\theta+\epsilon)-f(\theta-\epsilon)}{2\epsilon}$ where $\epsilon$ is a small value.
+
+\subsubsection{Gradient checking}
+\begin{itemize}
+  \item Take $W^{[1]},b^{[1]},\ldots,W^{[L]},b^{[L]}$ and reshape into a big vector $\theta$.
+  \item Take $dW^{[1]},db^{[1]},\ldots,dW^{[L]},db^{[L]}$ and reshape into a big vector $d\theta$.
+  \item For each $i$:
+    \begin{itemize}
+      \item $d\theta_{approx}[i]=
+        \frac{J(\theta_1,\theta_2,\ldots,\theta_i+\epsilon,\ldots)- J(\theta_1,\theta_2,\ldots,\theta_i-\epsilon,\ldots)}{2\epsilon}
+        \approx d\theta[i]=\frac{\partial J}{\partial\theta_i}$
+    \end{itemize}
+  \item Check $\frac{||d\theta_{approx}-d\theta||_2}{||d\theta_{approx}||_2+||d\theta||_2}$ is similar order of magnitude as  $\epsilon$
+\end{itemize}
+If the gradient check fails, one can investigate which component of $d\theta$ is substantially different to
+the corresponding component of $d\theta_{approx}$.
+Remember to include the regularization term if regularization is used.
+Note that gradient checking does not work with dropout.
+One can run gradient checking after initialization and then again after having run training for some time.
+
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
