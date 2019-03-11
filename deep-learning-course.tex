@@ -141,7 +141,7 @@ v ** 2
 
 In Python:
 \begin{minted}{python}
-  Z=np.dot(w.T, x)+b
+  Z = np.dot(w.T, x)+b
 \end{minted}
 
 \begin{equation}
@@ -516,14 +516,19 @@ Dropout randomly eliminates units from the network during training.
 Dropout can be implemented using ``inverted dropout''.
 \emph{E.g.} for layer 3 using keep\_prob=0.8.
 \begin{minted}{python}
-d3=np.random.rand(a3.shape[0], a3.shape[1]) < keep_prob
+d3 = np.random.rand(a3.shape[0], a3.shape[1]) < keep_prob
 \end{minted}
 The activations a3 are multiplied with the resulting boolean array.
 \begin{minted}{python}
-a3=np.multiply(a3, d3)  # a3 *= d3
+a3 = np.multiply(a3, d3)  # a3 *= d3
 a3 /= keep_prob
 \end{minted}
 Note that a3 is scaled so that the expected value for $Z^{[4]}$ does not change.
+When doing backpropagation, dA is multiplied with the same boolean array and scaled with the same factor.
+\begin{minted}{python}
+da3 = np.multiply(da3, d3)
+da3 /= keep_prob
+\end{minted}
 At test time dropout is \emph{not used}.
 keep\_prob can have different values for each layer.
 
@@ -591,6 +596,10 @@ the corresponding component of $d\theta_{approx}$.
 Remember to include the regularization term if regularization is used.
 Note that gradient checking does not work with dropout.
 One can run gradient checking after initialization and then again after having run training for some time.
+
+Yoshua Bengio: Reinforcement learning, how does a human explore and understand the world?
+How does causality and high-level abstractions work?
+Implement things yourself. Read ICLR proceedings.
 
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
