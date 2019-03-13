@@ -550,7 +550,7 @@ The downside of early stopping is that the tasks of minimizing $J$ and not overf
 and cannot be worked on independently any more.
 
 \subsection{Setting up your optimization problem}
-\subsubsection{Normalizing Inputs}
+\subsubsection{Normalizing Inputs}\label{cha:norminputs}
 Normalizing the inputs consists of two steps:
 \begin{enumerate}
   \item subtract the mean $\mu = \frac{1}{m}\sum_{i=1}^m x^{(i)}$
@@ -715,6 +715,33 @@ In a similar fashion one can sample $\beta=1-10^r$ where $r$ is sampled from a u
 Re-test hyperparameters occassionally (after acquiring more data for example).
 You can either ``babysit'' (update parameters during training) a single model if a lot of processing is required (Panda approach).
 If many models can be trained in parallel, one can simply pick the best one (Caviar approach).
+
+\subsection{Batch Normalization}
+\subsubsection{Normalizing activations in a network}
+Normalizing inputs speeds up learning (see \cref{cha:norminputs}).
+In a similar fashion one can normalize the values $Z^{[l]}$ in each layer $l$.
+Given the values $z^{(1)},\ldots,z^{(m)}$ of a layer, one computes
+\begin{equation}
+  \begin{split}
+    \mu&=\frac{1}{m}\sum_i z^{(i)}\\
+    \sigma^2&=\frac{1}{m}\sum_i (z^{(i)}-\mu)^2\\
+    z^{(i)}_{norm}&=\frac{z^{(i)}-\mu}{\sqrt{\sigma^2+\epsilon}}\\
+    \widetilde{z}^{(i)}&=\gamma z^{(i)}_{norm}+\beta
+  \end{split}
+\end{equation}
+where $\gamma$ and $\beta$ are learnable parameters of the model.
+The values $\widetilde{z}^{(i)}$ are then used instead of $z^{(i)}$ for continuing forward propagation.
+
+\subsubsection{Fitting Batch Norm into a neural network}
+\begin{equation}
+  \begin{split}
+    z^{[l]}&=W^{[l]}a^{[l-1]}\\
+    \widetilde{z}^{[l]}&=\gamma^{[l]}\frac{z^{[l]}-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta^{[l]}\\
+    a^{[l]}&=g^{[l]}(\widetilde{z}^{[l]})
+  \end{split}
+\end{equation}
+The vector values $\mu$ and $\sigma$ of each layer are computed for the current mini-batch.
+Note that $b^{[l]}$ is set to zero because it is made redundant by the vector $\beta^{[l]}$.
 
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
