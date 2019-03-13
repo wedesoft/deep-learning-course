@@ -601,6 +601,116 @@ Yoshua Bengio: Reinforcement learning, how does a human explore and understand t
 How does causality and high-level abstractions work?
 Implement things yourself. Read ICLR proceedings.
 
+\subsection{Optimization Algorithms}
+\subsubsection{Mini-batch gradient descent}
+Mini-batch gradient descent is a faster gradient descent algorithm.
+Instead of using all $m$ examples, the training set is split up into mini-batches
+$(X^{\{1\}},Y^{\{2\}}), (X^{\{2\}},Y^{\{2\}}), \ldots$ which get processed sequentially.
+A single pass through the training set is called an ``epoch''.
+
+\subsubsection{Understanding mini-batch gradient descent}
+Unlike batch gradient descent, when using mini-batch gradient descent, the cost function $J$ does not decrease monotonically.
+\emph{Stochastic gradient descent} uses a mini-batch size of $1$.
+In practise one uses a mini-batch size between the to extremes $1$ and $m$.
+The reason is that vectorization is still used and the convergence is faster.
+\begin{itemize}
+  \item if your training set, just use batch gradient descent ($m\le 2000$)
+  \item typical mini-batch sizes: $64,128,\ldots,1024$
+  \item make sure $(X^{\{t\}},Y^{\{t\}})$ fits into CPU/GPU memory
+\end{itemize}
+Mini-batch size can be seen as a hyper parameter to optimize.
+
+\subsubsection{Exponentially weighted averages}
+One can compute an exponentially weighted average of a sequence $\theta_1,\theta_2,\ldots$
+using $v_0=0$ and $v_t=\beta\theta_{t-1}+(1-\beta)\theta_t$.
+
+\subsubsection{Bias correction in exponentially weighted averages}
+$v_t=\beta v_{t-1}+(1-\beta)\theta_t$ starts at $0$, \emph{i.e.} is biased initially.
+The bias corrected value is $\frac{v_t}{1-\beta^t}$.
+
+\subsubsection{Gradient descent with momentum}
+Exponentially weighted averages of the gradient can be used to update the parameters.
+This allows you to increase the learning rate.
+\begin{equation}
+  \begin{split}
+    V_{dW}=&\beta V_{dW}+(1-\beta)dW\\
+    V_{db}=&\beta V_{db}+(1-\beta)db\\
+    W&\coloneqq W-\alpha V_{dW}\\
+    b&\coloneqq b-\alpha V_{db}
+  \end{split}
+\end{equation}
+Gradient descent with momentum has the two hyperparameters $\alpha$ and $\beta$.
+Typical value for $\beta$ is $0.9$.
+
+\subsubsection{RMSprop}
+On iteration $t$:
+\begin{itemize}
+  \item Compute $dW$, $db$ on current mini-batch
+  \item $s_{dW}=\beta_2 s_{dW}+(1-\beta_2)dW^2$ (exponential average of element-wise square)
+  \item $s_{db}=\beta_2 s_{db}+(1-\beta_2)db^2$ (exponential average of element-wise square)
+  \item $W\coloneqq W-\alpha\frac{dW}{\sqrt{s_{dW}}+\epsilon}$
+  \item $b\coloneqq b-\alpha\frac{db}{\sqrt{s_{db}}+\epsilon}$
+\end{itemize}
+$\epsilon$ is used to prevent division by zero.
+
+\subsubsection{Adam optimization algorithm}
+The Adam\footnote{Adaptive moment estimation} optimization algorithm is one of the few optimization algorithms
+which work well on a wide range of problems.
+The Adam optimization algorithm basically combines gradient descent with momentum and RMSprop. 
+\begin{itemize}
+  \item $V_{dW}=0$, $s_{dW}=0$, $V_{db}=0$, $s_{db}=0$
+  \item On iteration $t$:
+    \begin{itemize}
+      \item compute $dW$, $db$ using current mini-batch
+      \item $V_{dW}=\beta_1 V_{dW}+(1-\beta_1)dW$, $V_{db}=\beta_1 V_{db}+(1-\beta_1)db$
+      \item $s_{dW}=\beta_2 s_{dW}+(1-\beta_2)dW^2$, $s_{db}=\beta_2 s_{db}+(1-\beta_2)db^2$
+      \item $V_{dW}^{corrected}=V_{dW}/(1-\beta_1^t)$, $V_{db}^{corrected}=V_{db}/(1-\beta_1^t)$
+      \item $s_{dW}^{corrected}=s_{dW}/(1-\beta_2^t)$, $s_{db}^{corrected}=s_{db}/(1-\beta_2^t)$
+      \item $W\coloneqq W-\alpha\frac{V_{dW}^{corrected}}{\sqrt{s_{dW}^{corrected}}+\epsilon}$,
+        $b\coloneqq b-\alpha\frac{V_{db}^{corrected}}{\sqrt{s_{db}^{corrected}}+\epsilon}$
+    \end{itemize}
+\end{itemize}
+The hyperparameter $\alpha$ needs to be tuned.
+A common choice for $\beta_1$ is $0.9$ (first moment) and for $\beta_2$ is $0.999$ (second moment).
+One can use $\epsilon=10^{-8}$.
+
+\subsubsection{Learning rate decay}
+One can slowly reduce the learning rate over time to reduce the noise introduced by mini-batches
+when approaching the minimum.
+\begin{equation}
+  \alpha=\frac{1}{1+\mathrm{decay\ rate}*\mathrm{epoch\ num}}\alpha_0
+\end{equation}
+Other learning rate decay methods are
+\begin{itemize}
+  \item $\alpha=0.95^{\mathrm{epoch\ num}}\alpha_0$ (exponential decay)
+  \item $\alpha=\frac{k}{\sqrt{\mathrm{epoch\ num}}}\alpha_0$ or $\frac{k}{\sqrt{t}}\alpha_0$
+\end{itemize}
+
+\subsubsection{The problem of local optima}
+High-dimensional spaces rather have saddle points than local minima.
+However plateaus can slow down learning.
+
+\subsection{Hyperparameter tuning}
+\subsubsection{Tuning process}
+\begin{itemize}
+  \item $\alpha$
+  \item $\beta$
+  \item $\beta_1$, $beta_2$, $\epsilon$
+  \item \#layers
+  \item \#hidden units
+  \item learning rate decay
+  \item mini-batch size
+\end{itemize}
+When trying out combinations of hyperparameters, use random values instead of sampling a grid.
+This way one tries out more distinct values of each hyperparameter.
+Additionally one can use a coarse to fine scheme. \emph{I.e.} sampling more densely where the best results were found.
+
+\subsubsection{Using an appropriate scale to pick hyperparameters}
+For number of hidden units and number of layers one can sample a uniform random distribution.
+In the case of the learning rate $\alpha$ one uses a logarithmic scale.
+\emph{E.g.} $\alpha=10^r$ where $r$ is sampled from a uniform random distribution between $-4$ and $0$.
+In a similar fashion one can sample $\beta=1-10^r$ where $r$ is sampled from a uniform random distribution between $-3$ and $-1$.
+
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
