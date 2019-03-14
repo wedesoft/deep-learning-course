@@ -781,6 +781,53 @@ The backpropagation step is (similar as for logistic regression in \cref{cha:gra
   \frac{\partial J}{\partial z^{[L]}}=\hat{y}-y
 \end{equation}
 
+\subsection{Introduction to programming frameworks}
+\subsubsection{Deep learning frameworks}
+\begin{itemize}
+  \item Caffe/Caffe2
+  \item CNTK
+  \item DL4J
+  \item Keras
+  \item Lasagne
+  \item mxnet
+  \item PaddlePaddle
+  \item Tensorflow
+  \item Theano
+  \item Torch
+\end{itemize}
+Important criteria when choosing a deep learning framework are
+\begin{itemize}
+  \item ease of programming (development and deployment)
+  \item running speed
+  \item truly open (open source with good governance)
+\end{itemize}
+
+\subsubsection{Tensorflow}
+The example is to minimize
+\begin{equation}
+  J(w)=w^2-10w+25
+\end{equation}
+\begin{minted}{python}
+import tensorflow as tf
+w = tf.Variable(0, dtype=tf.float32)
+cost = tf.add(tf.add(w ** 2, tf.multiply(-10, w)), 25)
+train = tf.train.GradientDescentOptimizer(0.01).minimize(cost)
+init = tf.global_variables_initializer()
+session = tf.Session()
+session.run(init)
+for i in range(1000):
+  session.run(train)
+print(session.run(w))
+\end{minted}
+It is only necessary to define the forward propagation.
+Tensorflow is able to derive the derivatives necessary for the backward propagation step.
+For training data one uses a placeholder. For example
+\begin{minted}{python}
+x = tf.placeholder(tf.float32, [3, 1])
+coefficients = np.array([[1.], [-10.], [25.]])
+session.run(train, feed_dict={x: coefficients})
+\end{minted}
+
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
