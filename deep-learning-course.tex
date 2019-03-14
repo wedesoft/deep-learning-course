@@ -54,9 +54,9 @@ The labels are
   Y=\begin{pmatrix}y^{(1)} & y^{(2)} & \cdots & y^{(m)}\end{pmatrix}\in\mathbb{R}^{1\times m}
 \end{equation}
 
-Logistic regression tries to model the probability $\widehat{y}=P(y=1|x)$.
+Logistic regression tries to model the probability $\hat{y}=P(y=1|x)$.
 The model has the parameters $w\in\mathbb{R}^{n_x}$ and $b\in\mathbb{R}$.
-The model is $\widehat{y}^{(i)}=\sigma(w^\top x^{(i)}+b)$ using $\sigma(z^{(i)})=\frac{1}{1+e^{-z^{(i)}}}$.
+The model is $\hat{y}^{(i)}=\sigma(w^\top x^{(i)}+b)$ using $\sigma(z^{(i)})=\frac{1}{1+e^{-z^{(i)}}}$.
 Also see \cref{fig:sigmoid}.
 \begin{figure}[htbp]
   \begin{center}
@@ -69,13 +69,13 @@ Also see \cref{fig:sigmoid}.
 \subsubsection{Cost function}
 The logistic regression \emph{loss function} computes the error for a single training example.
 \begin{equation}
-  \mathcal{L}(\widehat{y},y)=-\big(y\log\widehat{y}+(1-y)\log(1-\widehat{y})\big)
+  \mathcal{L}(\hat{y},y)=-\big(y\log\hat{y}+(1-y)\log(1-\hat{y})\big)
 \end{equation}
 with $y\in\{0,1\}$.
 The \emph{cost function} is the average of the loss function of the entire training set.
 \begin{equation}
-  J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})=
-  -\frac{1}{m}\sum_{i=1}^m\big[y^{(i)}\log\widehat{y}^{(i)}+(1-y^{(i)})\log(1-\widehat{y}^{(i)})\big]
+  J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\hat{y}^{(i)},y^{(i)})=
+  -\frac{1}{m}\sum_{i=1}^m\big[y^{(i)}\log\hat{y}^{(i)}+(1-y^{(i)})\log(1-\hat{y}^{(i)})\big]
 \end{equation}
 
 \subsubsection{Gradient descent}
@@ -181,13 +181,13 @@ db = np.sum(A - Y) / m
 \subsubsection{Logistic Regression Cost Function}
 The two cases
 \begin{itemize}
-  \item if $y=1$: $p(y|x)=\widehat{y}$
-  \item if $y=0$: $p(y|x)=1-\widehat{y}$
+  \item if $y=1$: $p(y|x)=\hat{y}$
+  \item if $y=0$: $p(y|x)=1-\hat{y}$
 \end{itemize}
-can be expressed as one equation: $p(y|x)=\widehat{y}^y(1-\widehat{y})^{(1-y)}$.
+can be expressed as one equation: $p(y|x)=\hat{y}^y(1-\hat{y})^{(1-y)}$.
 Then
 \begin{equation}
-  \log p(y|x)=y\log\widehat{y}+(1-y)\log(1-\widehat{y})
+  \log p(y|x)=y\log\hat{y}+(1-y)\log(1-\hat{y})
 \end{equation}
 
 Overall log-probability to maximise (maximum likelihood)
@@ -228,7 +228,7 @@ There is
 \begin{itemize}
   \item an input layer $a^{[0]}=x$ ($x_1, x_2, \ldots)$
   \item zero, one, or more hidden layer(s) $a^{[l]}$ with $l\in\{1,2,\ldots,L-1\}$
-  \item an output layer $\widehat{y}=a^{[L]}$
+  \item an output layer $\hat{y}=a^{[L]}$
 \end{itemize}
 Only the input layer is not counted, \emph{e.g.} a 2 layer neural network has 1 hidden layer.
 \begin{equation}
@@ -243,10 +243,10 @@ Only the input layer is not counted, \emph{e.g.} a 2 layer neural network has 1 
 \subsubsection{Vectorizing across multiple examples}
 \begin{equation}
   \begin{split}
-    x^{(1)}&\to a^{[L](1)}=\widehat{y}^{(1)}\\
-    x^{(2)}&\to a^{[L](2)}=\widehat{y}^{(2)}\\
+    x^{(1)}&\to a^{[L](1)}=\hat{y}^{(1)}\\
+    x^{(2)}&\to a^{[L](2)}=\hat{y}^{(2)}\\
     &\vdots\\
-    x^{(m)}&\to a^{[L](m)}=\widehat{y}^{(m)}
+    x^{(m)}&\to a^{[L](m)}=\hat{y}^{(m)}
   \end{split}
 \end{equation}
 The computation of multiple training examples is vectorized using
@@ -327,7 +327,7 @@ A neural network with 5 layers can be called a ``deep'' neural network.
   \item $n^{[0]}=n_x$ is the number of input units.
   \item $a^{[l]}=g^{[l]}(z^{[l]})$ is the activation at layer $l$
   \item $a^{[0]}=x$ is the input
-  \item $a^{[L]}=\widehat{y}$ is the output
+  \item $a^{[L]}=\hat{y}$ is the output
   \item $z^{[l]}=W^{[l]}a^{[l-1]}+b^{[l]}$
 \end{itemize}
 
@@ -340,10 +340,10 @@ A neural network with 5 layers can be called a ``deep'' neural network.
     a^{[2]}&=g^{[2]}(z^{[2]})\\
     &\vdots\\
     z^{[L]}&=W^{[L]}a^{[L-1]}+b^{[L]}\\
-    \widehat{y}&=g^{[L]}(z^{[L]})
+    \hat{y}&=g^{[L]}(z^{[L]})
   \end{split}
 \end{equation}
-Using $a^{[0]}=x$ and $a^{[L]}=\widehat{y}$ one can write in general:
+Using $a^{[0]}=x$ and $a^{[L]}=\hat{y}$ one can write in general:
 \begin{equation}
   \begin{split}
     z^{[l]}&=W^{[l]}a^{[l-1]}+b^{[l]}\\
@@ -495,7 +495,7 @@ When encountering high \emph{variance}:
 \subsubsection{Regularization}
 When using logistic regression with $L_2$ regularization one minimizes
 \begin{equation}
-  J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})+\frac{\lambda}{2m}||w||_2^2
+  J(w,b)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\hat{y}^{(i)},y^{(i)})+\frac{\lambda}{2m}||w||_2^2
 \end{equation}
 where $w\in\mathbb{R}^{n_x}$, $b\in\mathbb{R}$, and $||w||_2^2=\sum_{j=1}^{n_x}w_j^2=w^\top w$
 (\emph{i.e.} using the $L_2$ norm).
@@ -503,7 +503,7 @@ $\lambda$ is the regularization parameter.
 
 When using a neural network, regularization is implemented as follows
 \begin{equation}
-  J(W^{[1]},b^{[1]},\ldots,W^{[L]},b^{[L]})=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\widehat{y}^{(i)},y^{(i)})
+  J(W^{[1]},b^{[1]},\ldots,W^{[L]},b^{[L]})=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\hat{y}^{(i)},y^{(i)})
   +\frac{\lambda}{2m}\sum_{l=1}^L||W^{[l]}||_F^2
 \end{equation}
 where $||W^{[l]}||_F^2=\sum_{i=1}^{n^{[l]}}\sum_{j=1}^{n^{[l-1]}}(W^{[l]}_{ij})^2$ (Frobenius norm) and
@@ -726,22 +726,60 @@ Given the values $z^{(1)},\ldots,z^{(m)}$ of a layer, one computes
     \mu&=\frac{1}{m}\sum_i z^{(i)}\\
     \sigma^2&=\frac{1}{m}\sum_i (z^{(i)}-\mu)^2\\
     z^{(i)}_{norm}&=\frac{z^{(i)}-\mu}{\sqrt{\sigma^2+\epsilon}}\\
-    \widetilde{z}^{(i)}&=\gamma z^{(i)}_{norm}+\beta
+    \tilde{z}^{(i)}&=\gamma z^{(i)}_{norm}+\beta
   \end{split}
 \end{equation}
 where $\gamma$ and $\beta$ are learnable parameters of the model.
-The values $\widetilde{z}^{(i)}$ are then used instead of $z^{(i)}$ for continuing forward propagation.
+The values $\tilde{z}^{(i)}$ are then used instead of $z^{(i)}$ for continuing forward propagation.
 
 \subsubsection{Fitting Batch Norm into a neural network}
 \begin{equation}
   \begin{split}
     z^{[l]}&=W^{[l]}a^{[l-1]}\\
-    \widetilde{z}^{[l]}&=\gamma^{[l]}\frac{z^{[l]}-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta^{[l]}\\
-    a^{[l]}&=g^{[l]}(\widetilde{z}^{[l]})
+    \tilde{z}^{[l]}&=\gamma^{[l]}\frac{z^{[l]}-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta^{[l]}\\
+    a^{[l]}&=g^{[l]}(\tilde{z}^{[l]})
   \end{split}
 \end{equation}
 The vector values $\mu$ and $\sigma$ of each layer are computed for the current mini-batch.
 Note that $b^{[l]}$ is set to zero because it is made redundant by the vector $\beta^{[l]}$.
+
+\subsubsection{Batch norm at test time}
+When testing the neural network, values for $\mu$ and $\sigma^2$ are required.
+The values for $\mu$ and $\sigma^2$ can be obtained by computing an exponentially weighted average
+of those values at training time.
+
+\subsection{Multi-class classification}
+\subsubsection{Softmax regression}
+Softmax regression is a generalisation of logistic regression to multiple classes.
+\emph{E.g.} recognising four classes cats, dogs, baby chicks, and other.
+In this case the output layer has $C=4$ units.
+\emph{I.e.} $\hat{y}\in\mathbb{R}^C$.
+The softmax activation function are as follows:
+\begin{equation}
+  \begin{split}
+    Z^{[L]}&=W^{[L]}a^{[L-1]}+b^{[L]}\\
+    t&=e^{(Z^{[L]})}\\
+    a_i^{[L]}&=\frac{t_i}{\sum_{j=1}^C t_i}
+  \end{split}
+\end{equation}
+
+\subsubsection{Training a softmax classifier}
+Note that softmax regression with $C=2$ reduces to logistic regression.
+The loss function for softmax regression is
+\begin{equation}
+  \mathcal{L}(\hat{y},y)=-\sum_{j=1}^C y_j\log\hat{y}_j
+\end{equation}
+where $y$ always is a basis vector with a single one and the rest zeros.
+The cost function is
+\begin{equation}
+  J(W^{[1]},b^{[1]},\ldots)=\frac{1}{m}\sum_{i=1}^m\mathcal{L}(\hat{y}^{(i)},y^{(i)})
+\end{equation}
+In a vectorized implementation $Y\in\mathbb{R}^{C\times m}$.
+
+The backpropagation step is (similar as for logistic regression in \cref{cha:gradneural})
+\begin{equation}
+  \frac{\partial J}{\partial z^{[L]}}=\hat{y}-y
+\end{equation}
 
 \section{Structuring Machine Learning Projects}
 \section{Convolutional Neural Networks}
