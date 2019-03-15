@@ -911,6 +911,44 @@ even though training and dev set performance are the same (see \cref{tbl:human})
 \end{table}
 The difference between training set error and Bayes optimal error can be called ``avoidable bias''.
 
+\subsubsection{Understanding human-level performance}
+Human-level performance often is used as a proxy for Bayes error.
+In this case the best result (\emph{e.g.} by a group of experts) is used.
+In other cases human-level performance is used to show that the system has comparable performance to an expert.
+In this case the comparative result (\emph{e.g.} single expert) is enough.
+As you approach human-level error it becomes harder to know whether you have a bias or variance problem,
+because the Bayes optimal error is not known.
+
+\subsubsection{Surpassing human-level performance}
+Algorithms surpass humans at
+\begin{itemize}
+  \item online advertising
+  \item product recommendations
+  \item logistics (predicting transit time)
+  \item loan approvals
+\end{itemize}
+All this examples are using structured data (\emph{i.e.} these are not natural perception tasks).
+Furthermore in these application a large amount of data is available.
+
+\subsubsection{Improving your model performance}
+The two fundamental assumptions of supervised learning
+\begin{enumerate}
+  \item You can fit the training set pretty well.
+  \item The training set performance generalizes pretty well to the dev/test set.
+\end{enumerate}
+Reducing avoidable bias
+\begin{itemize}
+  \item train bigger model
+  \item train longer/use better optimization algorithm
+  \item NN architecture/hyperparameters search (\emph{e.g.} RNN, CNN)
+\end{itemize}
+Reducing variance
+\begin{itemize}
+  \item more data
+  \item regularization (L2, dropout, data augmentation)
+  \item NN architecture/hyperparameters search
+\end{itemize}
+
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
 
