@@ -656,7 +656,7 @@ $\epsilon$ is used to prevent division by zero.
 \subsubsection{Adam optimization algorithm}
 The Adam\footnote{Adaptive moment estimation} optimization algorithm is one of the few optimization algorithms
 which work well on a wide range of problems.
-The Adam optimization algorithm basically combines gradient descent with momentum and RMSprop. 
+The Adam optimization algorithm basically combines gradient descent with momentum and RMSprop.
 \begin{itemize}
   \item $V_{dW}=0$, $s_{dW}=0$, $V_{db}=0$, $s_{db}=0$
   \item On iteration $t$:
@@ -829,6 +829,88 @@ session.run(train, feed_dict={x: coefficients})
 \end{minted}
 
 \section{Structuring Machine Learning Projects}
+\subsection{Introduction to ML Strategy}
+\subsubsection{Why ML Strategy}
+It is important to have a quick and effective way to figure out which of all the ideas are worth pursuing and which you can discard.
+
+\subsubsection{Orthogonalization}
+It is important that the different controls of the machine learning system have interpretable effects.
+\emph{I.e.} one wants to change one thing at a time.
+Things to control in machine learning are
+\begin{itemize}
+  \item fit training set well on cost function (train bigger network, use better optimization algorithm)
+  \item fit dev set well on cost function (regularization, bigger training set)
+  \item fit test set well on cost function (bigger dev set)
+  \item performs well in real world (change dev set or the cost function)
+\end{itemize}
+In contrast early stopping simultaneously affects training and dev set performance.
+
+\subsection{Setting up your goal}
+\subsubsection{Single number evaluation metric}
+It is recommended to setup a single number evaluation metric to measure the performance of your algorithm.
+\begin{itemize}
+  \item precision: what percentage of the classified examples are correctly classified
+  \item recall: what percentage of the available class examples are detected
+\end{itemize}
+A single number evaluation metric represents the trade-off between precision and recall
+(i.e. use F1 score $\frac{2}{\frac{1}{P}+\frac{1}{R}}$ ``harmonic mean'').
+
+\subsubsection{Satisficing and Optimizing metric}
+Example: maximize accuracy subject to running time $\le 100ms$.
+Then the accuracy is an optimizing metric while the running time is a satisficing metric.
+In general you can have one optimizing metric and many satisficing metrics.
+Another example is to optimize the accuracy subject to a certain limit on the number of false positives.
+
+\subsubsection{Train/dev/test distributions}
+It is important for the training and dev set to come from the same distribution.
+The dev set together with the evaluation metric are the target for development of the algorithm.
+\textbf{Choose a dev set and test set to reflect data you expect to get in the future and consider important to do well on.}
+
+\subsubsection{Size of the dev and test sets}
+The old way of splitting data 60\%/20\%/20\% applies to small test sets ($\le 10000$ samples).
+When there is sufficient data (\emph{e.g.} 1000000 samples) then one can split 98\%/1\%/1\%.
+Set your test set to be big enough to give high confidence in the overall performance of your system
+
+\subsubsection{When to change dev/test sets and metrics}
+Sometimes when trying the algorithm in the real world, one realises that one has to change the evaluation metric.
+\emph{E.g.} you can weight some samples in the dev and test set more strongly.
+It is important to change the metric to capture your preferences instead of coasting with an old metric.
+There are two orthogonal tasks:
+\begin{enumerate}
+  \item set target, define where you want to aim
+  \item do well on this metric
+\end{enumerate}
+If doing well on your metric + dev/test set does not correspond to doing well on your application, change your metric and/or dev/test set.
+
+\subsection{Comparing to human-level performance}
+\subsubsection{Why human-level performance?}
+The theoretical limit for the error (Bayes optimal error) of an algorithm generally is not 100\%
+(\emph{e.g.} noisy audio, blurry images).
+As long as your algorithm performs worse than a human, you can get more labelled data from humans to train your algorithm.
+\begin{itemize}
+  \item Get labelled data from humans
+  \item Gain insights from manual error analysis: Why did a person get this right?
+  \item better analysis of bias/variance
+\end{itemize}
+
+\subsubsection{Avoidable bias}
+Bayes optimal error can only be overcome by overfitting.
+Often human level performance is used as an estimate for Bayes optimal error.
+In the following example the decision on what to do is different depending on the human level performance
+even though training and dev set performance are the same (see \cref{tbl:human}).
+\begin{table}[htbp]
+  \begin{center}
+    \begin{tabular}{r|r|r}
+      human level performance     & 1\%  & 7.5\% \\
+      training set performance    & 8\%  & 8\%   \\
+      development set performance & 10\% & 10\%  \\\hline
+      decision & reduce bias & reduce variance
+    \end{tabular}
+    \caption{Different decision based on human level performance\label{tbl:human}}
+  \end{center}
+\end{table}
+The difference between training set error and Bayes optimal error can be called ``avoidable bias''.
+
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
 
