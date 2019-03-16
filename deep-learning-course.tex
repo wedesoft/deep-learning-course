@@ -949,6 +949,29 @@ Reducing variance
   \item NN architecture/hyperparameters search
 \end{itemize}
 
+\subsection{Error Analysis}
+\subsubsection{Carrying out error analysis}
+Manually examining examples where the algorithm is not performing well can give you insights on what to do next.
+\emph{I.e.} get 100 mislabelled dev set examples and analyse what kind of mistakes are most common.
+For example
+\begin{itemize}
+  \item fix pictures of dogs being recognized as cats
+  \item fix great cats (lions, panthers, etc.) being misrecognized
+  \item improve performance on blurry images
+\end{itemize}
+This helps to prioritize what class of error to work on.
+
+\subsubsection{Cleaning up incorrectly labelled data}
+Deep learning algorithms are quite robust to random errors in the training set.
+In contrast systematic errors (\emph{e.g.} white dogs classified as cats) are problematic.
+During error analysis one can treat incorrectly labelled examples simply as an other class of error.
+When correcting incorrect dev/test set examples
+\begin{itemize}
+  \item apply same process to your dev and test sets to make sure they continue to come from the same distribution
+  \item consider examining examples your algorithm got right as well as ones it got wrong
+  \item train and dev/test set data may now come from slightly different distributions
+\end{itemize}
+
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
 
