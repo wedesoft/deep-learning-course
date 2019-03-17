@@ -991,6 +991,27 @@ If training set and dev set are from different distributions it is necessary to 
 a piece of the training set (a training-dev set) in order to be able to distinguish variance from data mismatch in the dev set.
 As before you can use human level error as a proxy for Bayes optimal error to estimate avoidable bias.
 
+\subsubsection{Adressing data mismatch}
+\begin{itemize}
+  \item Carry out error analysis to try to understand the difference between training and dev set
+  \item Make training data more similar, or collect more data similar to dev/test set
+\end{itemize}
+You can use artificial data synthesis to make the training data more similar to the dev set.
+Note that synthesized data can lack in variation and might only create a small subset of the data required
+which causes the neural network to overfit.
+
+\subsection{Learning from multiple tasks}
+\subsubsection{Transfer learning}
+You can replace the last layer of a \emph{pre-trained} network with random weights and then train
+(\emph{fine tune}) the network on a different task.
+If the new data set is small, you can restrict training to the part of the neural network.
+Transfer learning from task A to task B makes sense when
+\begin{itemize}
+  \item task A and task B have the same input
+  \item you have a lot more data for task A than task B
+  \item low level features from A could be helpful for learning B
+\end{itemize}
+
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
 
