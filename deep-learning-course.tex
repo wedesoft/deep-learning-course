@@ -986,6 +986,11 @@ When correcting incorrect dev/test set examples
 It is important that the dev/test set are representative of the application you care about.
 \emph{E.g.} dev/test set with data from mobile application and training set mostly data from web pages.
 
+\subsubsection{Bias and Variance with mismatched data distributions}
+If training set and dev set are from different distributions it is necessary to carve out (after random shuffling)
+a piece of the training set (a training-dev set) in order to be able to distinguish variance from data mismatch in the dev set.
+As before you can use human level error as a proxy for Bayes optimal error to estimate avoidable bias.
+
 \section{Convolutional Neural Networks}
 \section{Sequence Models}
 
