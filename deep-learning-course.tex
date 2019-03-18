@@ -1012,7 +1012,98 @@ Transfer learning from task A to task B makes sense when
   \item low level features from A could be helpful for learning B
 \end{itemize}
 
+\subsubsection{Multi-task learning}
+Multi-task learning is to apply one neural network to multiple tasks simultaneously.
+\emph{E.g.}
+\begin{itemize}
+  \item detect pedestrians
+  \item detect cars
+  \item detect stop signs
+  \item detect traffic lights
+\end{itemize}
+Then the loss is $\frac{1}{m}\sum_{i=1}^m\sum_{j=1}^4\mathcal{L}(\hat{y}^{(i)}_j,y^{(i)}_j)$.
+Note that in contrast to softmax regression here one image can have multiple labels.
+If the data is incompletely labelled, one can just sum over the defined labels.
+Multi-task learning makes sense when
+\begin{itemize}
+  \item training on a set of tasks that could benefit from having shared lower-level features
+  \item usually: amount of data you have for each task is quite similar
+  \item can train a big enough neural network to do well on all the tasks
+\end{itemize}
+
+\subsection{End-to-end deep learning}
+\subsubsection{What is end-to-end deep learning}
+End-to-end deep learning replaces a pipeline of multiple stages with a single neural network.
+Deep learning requires a large dataset in order to have superior performance.
+Otherwise one can only omit no or some stages.
+In practise often you don't have enough data for the end-to-end approach.
+Often you have more data for each of the sub-tasks.
+\emph{E.g.} when detecting faces
+\begin{itemize}
+  \item detect location of face
+  \item compared zoomed face to picture in database
+\end{itemize}
+An examples where end-to-end deep learning works is machine learning.
+
+\subsubsection{Whether to use end-to-end deep learning}
+Pros
+\begin{itemize}
+  \item let the data speak
+  \item less hand-designing of components needed
+\end{itemize}
+Cons
+\begin{itemize}
+  \item may need large amount of data
+  \item excludes potentially useful hand-designed components
+\end{itemize}
+Applying end-to-end deep learning
+\begin{itemize}
+  \item key question: do you have sufficient data to learn a function of the complexity needed to map x to y?
+\end{itemize}
+
+Ruslan Salakhutdinov: Unsupervised learning/pretraining using Restricted Boltzmann Machines,
+now (with increased computing power available) standard backpropagation works better,
+current research is unsupervised learning (variational autoencoders, Generative Adversarial Networks),
+try different things and don't be afraid to tackle hard problems, also interesting is deep reinforcement learning.
+
 \section{Convolutional Neural Networks}
+\subsection{Computer Vision}
+Computer Vision Problems:
+\begin{itemize}
+  \item image classification (\emph{e.g.} cat or not cat)
+  \item object detection (pose detection, multiple objects)
+  \item neural style transfer
+\end{itemize}
+Deep learning on large images would require are a large number of weights if a fully connected network was used.
+
+\subsection{Edge Detection Example}
+Edges are detected by convolving with a linear shift-invariant filter, \emph{e.g.} the vertical Prewitt filter
+(1 1 1 0 0 0 -1 -1 -1), a vertical Sobel filter (1 2 1 0 0 0 -1 -2 -1), or a Scharr filter
+(3 10 3 0 0 0 -3 -10 -3).
+Convolution is denoted by $*$.
+In Tensorflow convolution can be performed using the function ``tf.nn.conv2d''.
+Instead of hand-picking the values of the filter, one can use machine learning to choose the individual weights of each filter.
+
+\subsection{Padding}
+You can use zero-padding so that the output image has the same size as the input.
+Otherwise edge pixels are weighted lower and also the output of a deep neural networks becomes very small.
+\begin{itemize}
+  \item ``valid'': no padding, output image will be smaller; $p=0$
+  \item ``same'': padding so that the output size is the same as the input size; $p=\frac{f-1}{2}$ where $f$ is the filter size
+\end{itemize}
+The filter size $f$ usually is an odd number.
+
+\subsection{Strided Convolutions}
+The result of the convolution can be subsampled by applying a stride larger than $1$.
+The size of the output is $\lfloor\frac{n+2p-f}{s}+1\rfloor$.
+Note that in machine learning convolution is actually a cross-correlation.
+Convolution is sometimes preferred in signal processing because it is an associative operation.
+
+\subsection{Convolutions over Volumes}
+An RGB image with $6\times 6\times 3$ elements gets convolved with a $3\times 3\times 3$ filter.
+The output is a $4\times 4$ image.
+When using multiple filters, the output will be three-dimensional (will have multiple channels).
+
 \section{Sequence Models}
 
 \end{document}
