@@ -1104,6 +1104,30 @@ An RGB image with $6\times 6\times 3$ elements gets convolved with a $3\times 3\
 The output is a $4\times 4$ image.
 When using multiple filters, the output will be three-dimensional (will have multiple channels).
 
+\subsection{One Layer of a Convolutional Network}
+A convolutional layer adds a bias unit for each filter followed by the ReLU activation function.
+\emph{I.e.} a $3\times 3\times 3$ filter has $3^3+1=28$ parameters.
+If layer $l$ is a convolutional layer:
+\begin{itemize}
+  \item $f^{[l]}$ is the filter size
+  \item $p^{[l]}$ is the padding
+  \item $s^{[l]}$ is the stride
+  \item $n^{[l]}_C$ is the number of filters
+\end{itemize}
+The input is of size $n^{[l-1]}_H\times n^{[l-1]}_W\times n^{[l-1]}_C$.
+The output and the activations are of size $n^{[l]}_H\times n^{[l]}_W\times n^{[l]}_C$.
+Each filter is of size $f^{[l]}\times f^{[l]}\times n^{[l-1]}_C$.
+\begin{equation}
+  \begin{split}
+    n^{[l]}_H&=\lfloor\frac{n^{[l-1]}_H+2p^{[l]}-f^{[l]}}{s^{[l]}}+1\rfloor\\
+    n^{[l]}_W&=\lfloor\frac{n^{[l-1]}_W+2p^{[l]}-f^{[l]}}{s^{[l]}}+1\rfloor
+  \end{split}
+\end{equation}
+When using batch gradient descent the activations $A^{[l]}$ will have size
+$m\times n^{[l]}_H\times n^{[l]}_W\times n^{[l]}_C$.
+The weights will have size $f^{[l]}\times f^{[l]}\times n^{[l-1]}_C\times n^{[l]}_C$.
+The biases will have size $n^{[l]}_C$.
+
 \section{Sequence Models}
 
 \end{document}
