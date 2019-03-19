@@ -1155,16 +1155,24 @@ Also see \cref{tbl:cnnexample}.
   \begin{tabular}{c|crr}\toprule
     & activation shape & activation size & \#parameters\\\midrule
     input:           & (32, 32,  3) & 3072 &     0 \\
-    CONV1 (f=5, s=1) & (28, 28,  8) & 6272 &   208 \\
+    CONV1 (f=5, s=1) & (28, 28,  8) & 6272 &   608 \\
     POOL1            & (14, 14,  8) & 1568 &     0 \\
-    CONV2 (f=5, s=1) & (10, 10, 16) & 1600 &   416 \\
+    CONV2 (f=5, s=1) & (10, 10, 16) & 1600 &  3216 \\
     POOL2            & (5, 5, 16)   &  400 &     0 \\
-    FC3              & (120, 1)     &  120 & 48001 \\
-    FC4              & (84, 1)      &   84 & 10081 \\
-    Softmax          & (10, 1)      &   10 &   841 \\\bottomrule
+    FC3              & (120, 1)     &  120 & 48120 \\
+    FC4              & (84, 1)      &   84 & 10164 \\
+    Softmax          & (10, 1)      &   10 &   850 \\\bottomrule
   \end{tabular}
   \caption{Example CNN\label{tbl:cnnexample}}
 \end{table}
+
+\subsection{Why Convolutions?}
+The two advantages are
+\begin{itemize}
+  \item parameter sharing: a feature detector that's usefil in one part of the image is probably useful in another part of the image
+  \item sparsity of connections: in each layer, each output value depends only on a small number of inputs
+\end{itemize}
+
 
 \section{Sequence Models}
 
