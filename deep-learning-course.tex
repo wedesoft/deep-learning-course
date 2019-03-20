@@ -1262,7 +1262,47 @@ To reduce the computational cost, one can use a ``bottleneck layer'' ($1\times 1
     \label{fig:inception}
   \end{center}
 \end{figure}
+The Inception network uses many Inception blocks.
+Also there are outputs (side-branches) in the middle of the network which are used to predict the output.
+This appears to have a regularizing effect and helps to prevent this network from overfitting.
 
+\subsection{Practical advices for using ConvNets}
+\subsubsection{Using Open-Source Implementations}
+Even after reading the paper it can be difficult to reproduce results published by another researcher.
+Often researchers publish their implementation on Github.
+
+\subsubsection{Transfer Learning}
+Rather than training from scratch using random initialization
+one can use transfer learning to transfer knowledge from one of the large public datasets.
+One initializes the network using the weights from the public network.
+Then one can freeze no part, part, or all but the last layer (depending on how much data you have) of the network and train the rest.
+To speed up training even more one can precompute the responses of the frozen network for the training set.
+
+\subsubsection{Data Augmentation}
+Different data augmentation methods are
+\begin{itemize}
+  \item mirroring an image
+  \item random cropping an image
+  \item rotation, shearing, local warping
+  \item random color shifting (\emph{e.g.} add RGB(20, -20, 20) to the image), PCA color augmentation
+\end{itemize}
+In practise often data augmentation and training run in parallel.
+The data augmentation parameters are hyperparameters to optimize.
+
+\subsubsection{State of Computer Vision}
+There is (relative to the task) little data available for object detection.
+There is (relative to the task) lots of data available for speech recognition.
+When lots of data is available, one can use simpler algorithms with less hand-engineering.
+\emph{I.e.} there are two sources of knowledge
+\begin{itemize}
+  \item labeled data
+  \item hand engineered features/network architecture/other components/transfer learning
+\end{itemize}
+Tips for doing well on benchmarks/winning competitions
+\begin{itemize}
+  \item ensembling (train several networks independently and average their outputs)
+  \item multi-crop at test time (run classifier on multiple versions of test images and average results)
+\end{itemize}
 
 \section{Sequence Models}
 
