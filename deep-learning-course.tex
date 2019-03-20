@@ -1216,6 +1216,54 @@ Finally there are two fully connected layers.
 Altogether there are $16$ layers.
 The network has about 138,000,000 parameters.
 
+\subsubsection{ResNets}
+When using deeper networks the training error eventually goes up again.
+Also deep networks are difficult to train because of vanishing/exploding gradient types of problems.
+Residual networks (ResNets) use skip connections to take activations to another layer much deeper in the neural network.
+A residual block uses a skip connection as follows
+\begin{equation}
+  \begin{split}
+    z^{[l+1]}&=W^{[l+1]}a^{[l]}+b^{[l+1]}\\
+    a^{[l+1]}&=g(z^{[l+1]})\\
+    z^{[l+2]}&=W^{[l+2]}a^{[l+1]}+b^{[l+2]}\\
+    a^{[l+2]}&=g(z^{[l+2]}a^{[l]})
+  \end{split}
+\end{equation}
+Also see \emph{He et al., 2015, Deep residual networks for image recognition}.
+A neural network with $L$ layers can be converted to a network with $L/2$ residual blocks.
+
+\subsubsection{Why ResNets Work}
+If the weight $W^{[l+1]}$ and the bias $b^{[l+1]}$ in a residual block are zero and the ReLU activation function is used,
+the residual block outputs $a^{[l]}$, \emph{i.e.} becomes the identity function.
+It is easy for a residual block to learn the identity function.
+Note that $z^{[l+2]}$ and $a^{[l]}$ need to have the same dimension.
+If not, an adapter matrix $W_s$ is used so that $W_s a^{[l]}$ has the same dimension as $z^{[l+2]}$.
+$W_s$ can be a diagonal matrix performing zero-padding or it can be learned.
+
+\subsubsection{Network in Network and 1x1 Convolutions}
+\emph{Lin et al., 2013, Network in network}:
+A 1x1 convolution with a different value for each channel and a different filter for each output layer
+is like defining a fully connected network for every pixel (each having multiple channels).
+A network in network can be used to reduce the number of channels.
+The filter size is $1\times 1\times n^{[l-1]}_C\times n^{[l]}_C$.
+
+\subsubsection{Inception Network Motivation}
+\emph{Szegedy et al., 2014, Going deeper with convolutions}:
+One can perform different convolutions with different filter sizes as well as max-pooling and stack the output channels
+(the width and height of the outputs must be the same).
+To reduce the computational cost, one can use a ``bottleneck layer'' ($1\times 1$ convolution) to first shrink the number of channels.
+
+\subsubsection{Inception Network}
+\Cref{fig:inception} shows a module of the Inception network.
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{inception}
+    \caption{Inception module}
+    \label{fig:inception}
+  \end{center}
+\end{figure}
+
+
 \section{Sequence Models}
 
 \end{document}
