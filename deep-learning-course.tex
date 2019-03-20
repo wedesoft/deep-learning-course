@@ -1067,7 +1067,8 @@ current research is unsupervised learning (variational autoencoders, Generative 
 try different things and don't be afraid to tackle hard problems, also interesting is deep reinforcement learning.
 
 \section{Convolutional Neural Networks}
-\subsection{Computer Vision}
+\subsection{Foundations of Convolutional Neural Networks}
+\subsubsection{Computer Vision}
 Computer Vision Problems:
 \begin{itemize}
   \item image classification (\emph{e.g.} cat or not cat)
@@ -1076,7 +1077,7 @@ Computer Vision Problems:
 \end{itemize}
 Deep learning on large images would require are a large number of weights if a fully connected network was used.
 
-\subsection{Edge Detection Example}
+\subsubsection{Edge Detection Example}
 Edges are detected by convolving with a linear shift-invariant filter, \emph{e.g.} the vertical Prewitt filter
 (1 1 1 0 0 0 -1 -1 -1), a vertical Sobel filter (1 2 1 0 0 0 -1 -2 -1), or a Scharr filter
 (3 10 3 0 0 0 -3 -10 -3).
@@ -1084,7 +1085,7 @@ Convolution is denoted by $*$.
 In Tensorflow convolution can be performed using the function ``tf.nn.conv2d''.
 Instead of hand-picking the values of the filter, one can use machine learning to choose the individual weights of each filter.
 
-\subsection{Padding}
+\subsubsection{Padding}
 You can use zero-padding so that the output image has the same size as the input.
 Otherwise edge pixels are weighted lower and also the output of a deep neural networks becomes very small.
 \begin{itemize}
@@ -1093,18 +1094,18 @@ Otherwise edge pixels are weighted lower and also the output of a deep neural ne
 \end{itemize}
 The filter size $f$ usually is an odd number.
 
-\subsection{Strided Convolutions}
+\subsubsection{Strided Convolutions}
 The result of the convolution can be subsampled by applying a stride larger than $1$.
 The size of the output is $\lfloor\frac{n+2p-f}{s}+1\rfloor$.
 Note that in machine learning convolution is actually a cross-correlation.
 Convolution is sometimes preferred in signal processing because it is an associative operation.
 
-\subsection{Convolutions over Volumes}
+\subsubsection{Convolutions over Volumes}
 An RGB image with $6\times 6\times 3$ elements gets convolved with a $3\times 3\times 3$ filter.
 The output is a $4\times 4$ image.
 When using multiple filters, the output will be three-dimensional (will have multiple channels).
 
-\subsection{One Layer of a Convolutional Network}
+\subsubsection{One Layer of a Convolutional Network}
 A convolutional layer adds a bias unit for each filter followed by the ReLU activation function.
 \emph{I.e.} a $3\times 3\times 3$ filter has $3^3+1=28$ parameters.
 If layer $l$ is a convolutional layer:
@@ -1128,7 +1129,7 @@ $m\times n^{[l]}_H\times n^{[l]}_W\times n^{[l]}_C$.
 The weights will have size $f^{[l]}\times f^{[l]}\times n^{[l-1]}_C\times n^{[l]}_C$.
 The biases will have size $n^{[l]}_C$.
 
-\subsection{Simple Convolutional Network Example}
+\subsubsection{Simple Convolutional Network Example}
 As you go deeper into a network the height and width decreases while the number of channels increases.
 Finally a fully connected logistic or softmax layer uses the stacked output of the last convolutional layer.
 A convolutional neural network usually has the following layers
@@ -1138,7 +1139,7 @@ A convolutional neural network usually has the following layers
   \item fully connected (FC)
 \end{itemize}
 
-\subsection{Pooling Layers}
+\subsubsection{Pooling Layers}
 Max-pooling takes the biggest number in each $2\times 2$ region ($f=s=2$).
 Max-pooling does not have any parameters to learn.
 Usually the channels are not reduced when doing max-pooling.
@@ -1148,7 +1149,7 @@ Max pooling usually does not use any padding.
 If the input is of size $n_H\times n_W\times n_C$, the output is of size
 $\lfloor\frac{n_H-f}{s}+1\rfloor\times\lfloor\frac{n_W-f}{s}+1\rfloor\times n_C$.
 
-\subsection{CNN Example}
+\subsubsection{CNN Example}
 Often convolutional and max-pooling are seen as one layer (because the pooling layer has no weights).
 Also see \cref{tbl:cnnexample}.
 \begin{table}
@@ -1166,13 +1167,54 @@ Also see \cref{tbl:cnnexample}.
   \caption{Example CNN\label{tbl:cnnexample}}
 \end{table}
 
-\subsection{Why Convolutions?}
+\subsubsection{Why Convolutions?}
 The two advantages are
 \begin{itemize}
   \item parameter sharing: a feature detector that's usefil in one part of the image is probably useful in another part of the image
   \item sparsity of connections: in each layer, each output value depends only on a small number of inputs
 \end{itemize}
 
+\subsection{Deep convolutional models: case studies}
+\subsubsection{Why look at case studies?}
+A good way to gain intuition about convolutional neural networks is to read/see other examples of effective conv nets.
+Some classic networks are:
+\begin{itemize}
+  \item LeNet-5
+  \item AlexNet
+  \item VGG
+\end{itemize}
+More recent networks are
+\begin{itemize}
+  \item ResNet
+  \item Inception
+\end{itemize}
+
+\subsubsection{Classic Networks}
+\emph{LeCun et al., 1998, Gradient-based learning applied to document recognition}:
+LeNet-5 classifies handwritten digits (MNIST) of size $32\times 32\times 1$ (gray scale).
+LeNet-5 uses $5\times 5$ filters, average pooling, sigmoid and tanh activation functions,
+and conv layers with increasing number of channels.
+The final two layers are fully connected layers.
+Modern networks rather use max-pooling and ReLU activation functions.
+LeNet-5 has about 60,000 parameters.
+
+\emph{Krizhevsky et al., 2012, ImageNet classification with deep convolutional neural networks}:
+AlexNet is named after Alex Krizhevsky.
+The input size is $227\times 227\times 3$.
+It uses $11\times 11$ filters with a stride of $4$, later a $5\times 5$ filter with padding and stride $1$.
+Max-pooling uses $3\times 3$ filters and a stride of $2$ in each case.
+AlexNet uses the ReLU activation function.
+AlexNet as about 160,000,000 parameters and was implemented using multiple GPUs.
+Local Response Normalization is used (but has not become popular).
+
+\emph{Simonyan \& Zisserman 2015: Very deep convolutional networks for large-scale image recognition}:
+The VGG-16 network just uses $3\times 3$ convolution filters using stride $1$ and same padding.
+Max-pooling always uses $2\times 2$ filters with a stride of $2$.
+Multiple convolutional layers are used before max-pooling.
+The number of channels increases by a factor of $2$ with each group of convolutional layers.
+Finally there are two fully connected layers.
+Altogether there are $16$ layers.
+The network has about 138,000,000 parameters.
 
 \section{Sequence Models}
 
