@@ -1304,6 +1304,57 @@ Tips for doing well on benchmarks/winning competitions
   \item multi-crop at test time (run classifier on multiple versions of test images and average results)
 \end{itemize}
 
+\subsection{Detection algorithms}
+\subsubsection{Object Localization}\label{cha:localize}
+There are three different algorithms:
+\begin{itemize}
+  \item image classification: just classify the object
+  \item classification with localization: classify and localize object in a picture
+  \item detection: classify and localize multiple objects in a picture
+\end{itemize}
+When doing classification with localization one can use additional outputs $b_x, b_y, b_h, b_w\in[0,1]$ which define a bounding box
+with midpoint $(b_x,b_y)$ and bounding box width $b_w$ and height $b_h$.
+The output is
+\begin{equation}
+  y=\begin{pmatrix}p_c\\b_x\\b_y\\b_h\\b_w\\c_1\\c_2\\c_3\end{pmatrix}
+\end{equation}
+Where $p_c$ decides whether there is an object at all and $c_1,c_2,c_3$ are $1$ if the object belongs to the given class (\emph{e.g.} pedestrian, car, or motorcycle).
+Mote that here we assume that there is at most one object shown in the picture.
+When $p_c$ is $0$, the other parts of the label are ``?'' (don't care).
+One can use a log-likelihood loss for the class labels, square error for the bounding box parameters,
+and logistic regression loss for $p_c$.
+
+\subsubsection{Landmark Detection}
+One can learn landmark coordinates (\emph{e.g.} corners of left and right eye, or multiple keypoints on a face, pose of a person).
+The network then would output $l_{1x},l_{1y},l_{2x},l_{2y},\ldots$.
+The coordinates can for example be used for augmented reality.
+
+\subsubsection{Object Detection}
+First a neural network is trained to classify tightly cropped images to whether a car is shown in the image or not.
+The conv net then is used with a sliding window to exhaustively search the image.
+The process is repeated for different window sizes.
+This algorithm is called ``sliding windows detection''.
+
+\subsubsection{Convolutional Implementation of Sliding Windows}
+\emph{Sermanet et al., 2014, OverFeat: Integrated recognition, localization and detection using convolutional networks}:
+One can turn a fully connected layers into a $1\times 1$ convolutional layers (see \cref{fig:convslide}).
+Running the same algorithm on the full image instead of the slidding window, one obtains the results for all window positions
+while reusing a lot of the computation which is identical between different overlapping slidding windows.
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{convslide}
+    \caption{Implementing sliding window using $1\times 1$ convolutional layers}
+    \label{fig:convslide}
+  \end{center}
+\end{figure}
+
+\subsubsection{Bounding Box Predictions}
+The You Only Look Once (YOLO) algorithm divides up the image into a grid (\emph{e.g.} $19\times 19$).
+The training label for an image for example is a $19\times 19\times 8$ (where $8$ is as in \cref{cha:localize}).
+Each grid cell can output a bounding box and object class (or no object).
+The bounding box coordinates are specified relative to the cell size.
+Note that $b_w$ and $b_h$ can be bigger than one.
+
 \section{Sequence Models}
 
 \end{document}

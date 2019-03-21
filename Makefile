@@ -6,6 +6,7 @@ deep-learning-course.pdf: sigmoid.pdf
 
 .tex.pdf:
 	pdflatex -shell-escape $<
+	pdflatex -shell-escape $<
 
 .gnuplot.pdf:
 	gnuplot $<
