@@ -1335,7 +1335,7 @@ The conv net then is used with a sliding window to exhaustively search the image
 The process is repeated for different window sizes.
 This algorithm is called ``sliding windows detection''.
 
-\subsubsection{Convolutional Implementation of Sliding Windows}
+\subsubsection{Convolutional Implementation of Sliding Windows}\label{cha:cnnslide}
 \emph{Sermanet et al., 2014, OverFeat: Integrated recognition, localization and detection using convolutional networks}:
 One can turn a fully connected layers into a $1\times 1$ convolutional layers (see \cref{fig:convslide}).
 Running the same algorithm on the full image instead of the slidding window, one obtains the results for all window positions
@@ -1361,7 +1361,7 @@ IoU is a measure of the overlap between two bounding boxes.
 The function simply divides the area of the bounding box intersection by the area of the union.
 The answer is ``correct'' if IoU$\ge$0.5.
 
-\subsubsection{Non-max Suppression}
+\subsubsection{Non-max Suppression}\label{cha:nonmax}
 Your algorithm may find multiple detections of the same object.
 YOLO can detect the same object in multiple neighbouring cells.
 The cell with the largest $p_c$ gets selected. Other bounding boxes with a high IoU are rejected.
@@ -1375,6 +1375,62 @@ The algorithm is as follows:
     \end{itemize}
 \end{itemize}
 Non-maxima suppression is performed for each output class.
+
+\subsubsection{Anchor Boxes}
+If there are overlapping objects, two object centres can end up in the same grid cell.
+Each grid cell outputs two object classifications and bounding boxes.
+Each object in training image is assigned to grid cell that contains object's midpoint and anchor box for the grid cell with highest IoU.
+\emph{E.g.} one anchor box is wide and the other anchor box is tall.
+The output of the algorithm is $19\times 19\times 16$.
+The anchor boxes can be chosen using k-means clustering.
+
+\subsubsection{YOLO Algorithm}
+\emph{Redmon et al., 2016, You Only Look Once: Unified, Real-Time Object Detection}:
+The YOLO algorithm works as follows.
+The training labels are of size $19\times 19\times 2\times 8$ if using $2$ anchor boxes.
+The $8$ elements are $p_c$, the $4$ bounding box coordinates, and the $3$ class label (pedestrian, car, motorcycle).
+Then non-max suppressed outputs are produced
+\begin{itemize}
+  \item For each grid call, get $3$ predicted bounding boxes.
+  \item Get rid of low probability predictions.
+  \item For each class use non-max suppression to generate final predictions as shown in \cref{cha:nonmax}.
+\end{itemize}
+
+\subsubsection{Region Proposals}
+\emph{Girshik et al., 2013, Rich feature hierarchies for accurate object detection and semantic segmentation}:
+The R-CNN algorithm segments the scene into a small number of interesting blobs.
+The convolutional network then is run on each region of interest.
+For each of the regions a label and accurate bounding box are produced.
+Fast R-CNN uses the convolution implementation of sliding windows (see \cref{cha:cnnslide}) to classify all the proposed regions.
+Faster R-CNN uses a convolutional neural network to propose regions.
+However R-CNN tends to be slower than YOLO.
+
+\subsection{Face Recognition}
+\subsubsection{What is face recognition}
+Example face recognition controlling the entrance gate at Baidu.
+Face verification and face recognition are two different problems.
+\begin{itemize}
+  \item face verification: given image and name/ID output whether the input image is that of the claimed person
+  \item face recognition: given a database of $K$ persons and amn input image, output ID if the image is any of the $K$ persons (or ``not recognized'')
+\end{itemize}
+Face recognition is much harder because the required accuracy for each of the $K$ entries is much higher.
+Face verification basically is face recognition with $K=1$.
+
+\subsubsection{One Shot Learning}
+In one-shot learning one learns a dissimilarity function $d$
+which given a pair of images outputs a low value if they are from the same person and a high value otherwise.
+Face recognition is performed by comparing the input image with all $K$ images in the database.
+The function $d$ is trained using only one shot of each person.
+
+\subsubsection{Siamese Network}
+\emph{Taigman et al., 2014, DeepFace closing the gap to human level performance}:
+A siamese network $f$ is a network given to images $x^{(i)}$ and $x^{(j)}$ allows you to define the dissimilarity function as follows
+\begin{equation}
+  d(x^{(i)},x^{(j)}) = ||f(x^{(i)})-f(x^{(j)})||
+\end{equation}
+The function $f$ is a convolutional neural network encoding the input image.
+
+\subsection{Neural Style Transfer}
 
 \section{Sequence Models}
 
