@@ -1460,6 +1460,15 @@ It is important to choose triplets that are ``hard'' to train on:
 \end{equation}
 See Schroff et al. paper about FaceNet for details.
 
+\subsubsection{Face Verification and Binary Classification}
+Instead of using the distance $d$ one can learn a similarity function.
+\emph{I.e.} the outputs of $f$ are compared using a final logistic regression unit.
+\begin{equation}
+  \hat{y}=\sigma(\sum_kw_k|f(x^{(i)})_k-f(x^{(j)})_k|+b)
+\end{equation}
+See DeepFace paper for more details.
+Given a new image $x^{(i)}$ one can use precomputed $f(x^{(j)})$ for faster classification.
+
 \subsection{Neural Style Transfer}
 
 \section{Sequence Models}
