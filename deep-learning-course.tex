@@ -1348,12 +1348,33 @@ while reusing a lot of the computation which is identical between different over
   \end{center}
 \end{figure}
 
-\subsubsection{Bounding Box Predictions}
+\subsubsection{Bounding Box Predictions}\label{cha:bbpred}
 The You Only Look Once (YOLO) algorithm divides up the image into a grid (\emph{e.g.} $19\times 19$).
 The training label for an image for example is a $19\times 19\times 8$ (where $8$ is as in \cref{cha:localize}).
 Each grid cell can output a bounding box and object class (or no object).
 The bounding box coordinates are specified relative to the cell size.
 Note that $b_w$ and $b_h$ can be bigger than one.
+
+\subsubsection{Intersection Over Union}
+Intersection over Union (IoU) is used to evaluate an object detection algorithm.
+IoU is a measure of the overlap between two bounding boxes.
+The function simply divides the area of the bounding box intersection by the area of the union.
+The answer is ``correct'' if IoU$\ge$0.5.
+
+\subsubsection{Non-max Suppression}
+Your algorithm may find multiple detections of the same object.
+YOLO can detect the same object in multiple neighbouring cells.
+The cell with the largest $p_c$ gets selected. Other bounding boxes with a high IoU are rejected.
+The algorithm is as follows:
+\begin{itemize}
+  \item Discard all boxes with $p_c\le 0.6$.
+  \item While there are any remaining boxes:
+    \begin{itemize}
+      \item Pick the box with the largest $p_c$.
+      \item Discard any remaining box with IoU$\ge$0.5 with the box output in the previous step.
+    \end{itemize}
+\end{itemize}
+Non-maxima suppression is performed for each output class.
 
 \section{Sequence Models}
 
