@@ -1417,18 +1417,48 @@ Face recognition is much harder because the required accuracy for each of the $K
 Face verification basically is face recognition with $K=1$.
 
 \subsubsection{One Shot Learning}
-In one-shot learning one learns a dissimilarity function $d$
+In one-shot learning one learns a distance function $d$
 which given a pair of images outputs a low value if they are from the same person and a high value otherwise.
 Face recognition is performed by comparing the input image with all $K$ images in the database.
 The function $d$ is trained using only one shot of each person.
 
 \subsubsection{Siamese Network}
 \emph{Taigman et al., 2014, DeepFace closing the gap to human level performance}:
-A siamese network $f$ is a network given to images $x^{(i)}$ and $x^{(j)}$ allows you to define the dissimilarity function as follows
+A siamese network $f$ is a network given to images $x^{(i)}$ and $x^{(j)}$ allows you to define the distance function as follows
 \begin{equation}
   d(x^{(i)},x^{(j)}) = ||f(x^{(i)})-f(x^{(j)})||
 \end{equation}
 The function $f$ is a convolutional neural network encoding the input image.
+
+\subsubsection{Triplet Loss}
+\emph{Schroff et al., 2015, FaceNet: A unified embedding for face recognition and clustering}:
+The Siamese network is trained using triplet loss.
+A triplet consist of the
+\begin{itemize}
+  \item an anchor image A
+  \item a positive image P
+  \item a negative example N
+\end{itemize}
+The following property is desirable
+\begin{equation}\label{equ:triplet}
+  \underbrace{||f(A)-f(P)||}_{d(A,P)}^2 + \alpha \le \underbrace{||f(A)-f(N)||}_{d(A,N)}^2
+\end{equation}
+where $\alpha>0$ is the margin.
+The loss function $\mathcal{L}$ is defined as
+\begin{equation}
+  \mathcal{L}(A,P,N)=\max(||f(A)-f(P)||^2-||f(A)-f(N)||^2+\alpha, 0)
+\end{equation}
+The overall cost function is defined as
+\begin{equation}
+  J=\sum_{i=1}^m\mathcal{L}(A^{(i)},P^{(i)},N^{(i)})
+\end{equation}
+For the training set it is necessary to have multiple images of each person.
+If A, P, and N are chosen randomly, the condition \cref{equ:triplet} is easily satisfied.
+It is important to choose triplets that are ``hard'' to train on:
+\begin{equation}
+  d(A, P)\approx d(A, N)
+\end{equation}
+See Schroff et al. paper about FaceNet for details.
 
 \subsection{Neural Style Transfer}
 
