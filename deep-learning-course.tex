@@ -1462,6 +1462,7 @@ See Schroff et al. paper about FaceNet for details.
 
 \subsubsection{Face Verification and Binary Classification}
 Instead of using the distance $d$ one can learn a similarity function.
+In this case face recognition is posed as a binary classification problem.
 \emph{I.e.} the outputs of $f$ are compared using a final logistic regression unit.
 \begin{equation}
   \hat{y}=\sigma(\sum_kw_k|f(x^{(i)})_k-f(x^{(j)})_k|+b)
@@ -1470,6 +1471,55 @@ See DeepFace paper for more details.
 Given a new image $x^{(i)}$ one can use precomputed $f(x^{(j)})$ for faster classification.
 
 \subsection{Neural Style Transfer}
+\subsubsection{What is neural style transfer?}
+From a content image $C$ and a style image $S$ one generates an image $G$ which combines the content and style.
+
+\subsubsection{What are deep ConvNets learning?}
+\emph{Zeiler and Fergus, 2013, Visualizing and understanding convolutional networks}:
+One can visualize what image patch maximizes a hidden unit's activation.
+
+\subsubsection{Cost Function}
+\emph{Gatys et al., 2015, A neural algorithm of of artistic style}:
+\begin{equation}
+  J(G)=\alpha J_{content}(C, G)+\beta J_{style}(S, G)
+\end{equation}
+The generated image $G$ is acquired as follows
+\begin{enumerate}
+  \item Initiate $G$ randomly
+  \item Use gradient descent to minimize $J(G)$: $G\coloneqq G-\frac{\partial}{\partial G}J(G)$
+\end{enumerate}
+
+\subsubsection{Content Cost Function}
+\begin{itemize}
+  \item A hidden layer $l$ somewhere in the middle of the network is used for content cost
+  \item Use pre-trained convnet (\emph{e.g.} VGG network)
+  \item Let $a^{[l](C)}$ and $a^{[l](G)}$ be the activations of layer $l$ on the images.
+  \item If $a^{[l](C)}$ and $a^{[l](G)}$ are similar, both images have similar content
+\end{itemize}
+\begin{equation}
+  J_{content}(C, G) = \frac{1}{2} ||a^{[l](C)} - a^{[l](G)}||^2
+\end{equation}
+
+\subsubsection{Style Cost Function}
+Say you are using layer $l$ to measure ``style''.
+The style is defined as the correlation between activations across channels.
+The layer is of size $n_H\times n_W\times n_C$.
+Let $a^{[l]}_{i,j,k}$ be the activation at $(i,j,k)$.
+The style matrix $G^{[l]}$ is of size $n_c^{[l]}\times n_c^{[]}$.
+\begin{equation}
+  \begin{split}
+    G^{[l](S)}_{kk^\prime}&=\sum_i\sum_j a^{[l](S)}_{ijk} a^{[l](S)}_{ijk^\prime}\\
+    G^{[l](G)}_{kk^\prime}&=\sum_i\sum_j a^{[l](G)}_{ijk} a^{[l](G)}_{ijk^\prime}
+  \end{split}
+\end{equation}
+The style cost function is
+\begin{equation}
+  J^{[l]}_{style}(S, G)=\frac{1}{(2n^{[l]}_Hn^{[l]}_Wn^{[l]}_C)^2}||G^{[l](S)}-G^{[l](G)}||^2_F
+\end{equation}
+A weighted sum of style cost functions of different layers is used to compute the full cost function
+\begin{equation}
+  J_{style}(S,G)=\sum_l \lambda^{[l]} J^{[l]}_{style}(S,G)
+\end{equation}
 
 \section{Sequence Models}
 
