@@ -1576,4 +1576,16 @@ One can stack $W_{aa}$ and $W_{ax}$ horizontally and replace $W_{ya}$ with $W_y$
 \end{equation}
 where $[a^{<t-1>},x^{<t>}]$ is stacked vertically.
 
+\subsubsection{Backpropagation through time}
+The parameters $W_a, b_a, W_y, b_y$ are used in each time step.
+One can use the standard logistic regression loss (cross-entropy loss) for each time step $t$:
+\begin{equation}
+  \mathcal{L}^{<t>}(\hat{y}^{<t>},y^{<t>})=-y^{<t>}\log\hat{y}^{<t>}-(1-y^{<t>})\log(1-\hat{y}^{<t>})
+\end{equation}
+The total loss is computed by summation over the time steps:
+\begin{equation}
+  \mathcal{L}(\hat{y},y)=\sum_{t=1}^{T_y}\mathcal{L}^{<t>}(\hat{y}^{<t>},y^{<t>})
+\end{equation}
+The most significant backpropagation is through time for the sequence of activations.
+
 \end{document}
