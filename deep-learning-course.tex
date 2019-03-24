@@ -1550,4 +1550,30 @@ If there are multiple training examples, then we use $x^{(i)<t>}$, $y^{(i)<t>}$,
 for the $i$th training example.
 Words in text can be represented as one-hot vectors with for example 10,000 units.
 
+\subsubsection{Recurrent neural network}
+A standard neural network cannot be used for sequence data because
+\begin{itemize}
+  \item Inputs, outputs can be different lengths in different examples.
+  \item Doesn't share features learned across different positions of text.
+\end{itemize}
+A recurrent neural networks uses information from the previous timestep.
+At the first timestep a zero activation is used as information from the previous timestep.
+\begin{equation}
+  \begin{split}
+    a^{<0>}&=\vec{0}\\
+    a^{<t>}&=g_a(W_{aa}a^{<t-1>}+W_{ax}x^{<t>}+b_a)\\
+    \hat{y}^{<t>}&=g_y(W_{ya}a^{<t>}+b_y)
+  \end{split}
+\end{equation}
+For $g_a$ $\tanh$ and ReLU are frequently used.
+$g_y$ can for example be the sigmoid function.
+One can stack $W_{aa}$ and $W_{ax}$ horizontally and replace $W_{ya}$ with $W_y$ which results in:
+\begin{equation}
+  \begin{split}
+    a^{<t>}&=g(W_a[a^{<t-1>},x^{<t>}]+b_a)\\
+    \hat{y}^{<t>}&=g(W_ya^{<t>}+b_y)
+  \end{split}
+\end{equation}
+where $[a^{<t-1>},x^{<t>}]$ is stacked vertically.
+
 \end{document}
