@@ -1506,6 +1506,7 @@ The style is defined as the correlation between activations across channels.
 The layer is of size $n_H\times n_W\times n_C$.
 Let $a^{[l]}_{i,j,k}$ be the activation at $(i,j,k)$.
 The style matrix $G^{[l]}$ is of size $n_c^{[l]}\times n_c^{[]}$.
+Note that the style matrix $G^{[l]}$ is not the same as the generated image $G$ (name clash).
 \begin{equation}
   \begin{split}
     G^{[l](S)}_{kk^\prime}&=\sum_i\sum_j a^{[l](S)}_{ijk} a^{[l](S)}_{ijk^\prime}\\
@@ -1527,5 +1528,26 @@ CAT scans are examples of 3D data.
 Conv nets can be applied to 1D and 3D data analogous to 2D data.
 
 \section{Sequence Models}
+\subsection{Recurrent Neural Networks}
+\subsubsection{Why sequence models}
+Application of sequence models
+\begin{itemize}
+  \item speech recognition
+  \item music generation
+  \item sentiment classification
+  \item DNA sequence analysis
+  \item machine translation
+  \item video activity recognition
+  \item name entity recognition
+\end{itemize}
+In some cases input and output are sequences
+
+\subsubsection{Notation}
+The input sequences is $x^{<1>}, x^{<2>}, \ldots$.
+The output sequences is $y^{<1>}, y^{<2>}, \ldots$.
+The length of the input and output sequence are $T_x$ and $T_y$.
+If there are multiple training examples, then we use $x^{(i)<t>}$, $y^{(i)<t>}$, $T_x^{(i)}$, and $T_y^{(i)}$
+for the $i$th training example.
+Words in text can be represented as one-hot vectors with for example 10,000 units.
 
 \end{document}
