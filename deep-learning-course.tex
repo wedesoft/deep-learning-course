@@ -1676,4 +1676,21 @@ LSTMs have an update gate $\Gamma_u$, a forget gate $\Gamma_f$, and an output ga
 \end{equation}
 A variation of the LSTM uses ``peephole connections'', making the gates depend on $c^{<t-1>}$ as well.
 
+\subsubsection{Bidirectional RNN}
+A sentence cannot in general be understood by looking backwards in time only.
+\emph{E.g.} the meaning of the third word Teddy can only be interpreted correctly after reading the next word.
+\begin{itemize}
+  \item He said, ``Teddy bears are on sale!''
+  \item He said, ``Teddy Roosevelt was a great president!''
+\end{itemize}
+A bidirectional RNN (BRNN) works using forward activations and backward activations.
+The activations are connected to the output using a fully connected layer.
+
+\subsubsection{Deep RNNs}
+One can stack multiple layers of RNNs to build deeper RNNs.
+There are activations $a^{[l]<t>}$ for each layer $l$ and each timestep $t$.
+\begin{equation}
+  a^{[l]<t>}=g(W_a^{[l]}[a^{[l]<t-1>},a^{[l-1]<t>}]+b_a^{[l]})
+\end{equation}
+
 \end{document}
