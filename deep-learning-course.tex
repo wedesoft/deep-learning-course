@@ -1600,4 +1600,39 @@ Examples of RNN architectures:
   \item many-to-many (encoder and decoder part) with different input and output sizes (\emph{e.g.} machine translation)
 \end{itemize}
 
+\subsubsection{Language model and sequence generation}
+A language model assigns a probability to each sentence.
+The language model is trained using a large corpus of english text.
+A sentence is represented using words and a final token: $y^{<1>}, y^{<2>},\ldots,\mathrm{<eos>}$.
+Unknown words not in the vocabulary are represented using the token $\mathrm{<unk>}$.
+The softmax output of the language RNN outputs the probabilities $\hat{y}^{<1>}$ of the first word.
+Given the first word $y^{<1>}$, it then outputs the probabilities for the second word $\hat{y}^{<2>}$.
+\emph{I.e.} the RNN learns to predict one word at a time.
+The softmax loss function is
+\begin{equation}
+  \mathcal{L}(\hat{y}^{<t>},y^{<t>})=-\sum_i y^{<t>}_i \log \hat{y}^{<t>}_i
+\end{equation}
+The overall loss is
+\begin{equation}
+  \mathcal{L}=\sum_t\mathcal{L}^{<t>}(\hat{y}^{<t>},y^{<t>})
+\end{equation}
+After training on a large corpus of text,
+one can \emph{e.g.} predict the probability of
+\begin{equation}
+  P(y^{<1>},y^{<2>},y^{<3>})=P(y^{<1>})P(y^{<2>}|y^{<1>})P(y^{<3>}|y^{<1>},y^{<2>})
+\end{equation}
+
+\subsubsection{Sampling novel sequences}
+The language model allows you to sample according to the softmax outputs of the RNN.
+In Python one can use np.random.choice.
+The end of the sentence is represented using the <eos> token.
+One can reject the <unk> word.
+It is also possible to build a character-level RNN instead of a word-level RNN.
+The disadvantage is that character-level RNNs need to process longer sequences which makes them harder and more computationally expensive to train.
+
+\subsubsection{Vanishing gradients with RNNs}
+Similar to deep neural networks, RNNs suffer from the vanishing/exploding gradients problem.
+Language has long term dependencies (\emph{e.g.} ``The cat, which ..., was full.'' vs. ``The cats, which ..., were full.'').
+One can handle numerical problems caused by exploding gradients using gradient clipping.
+
 \end{document}
