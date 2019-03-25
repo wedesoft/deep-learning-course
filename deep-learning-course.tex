@@ -1635,4 +1635,45 @@ Similar to deep neural networks, RNNs suffer from the vanishing/exploding gradie
 Language has long term dependencies (\emph{e.g.} ``The cat, which ..., was full.'' vs. ``The cats, which ..., were full.'').
 One can handle numerical problems caused by exploding gradients using gradient clipping.
 
+\subsubsection{Gated Recurrent Unit (GRU)}
+\emph{Chung et al., 2014, Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling}:
+GRUs (simplified) use a memory cell $c^{<t>}$ (here $c^{<t>}=a^{<t>}$).
+$\tilde{c}^{<t>}$ are the new candidates for overwriting $c^{<t>}$.
+$\Gamma_u$ is the update gate.
+\begin{equation}
+  \begin{split}
+    \tilde{c}^{<t>}&=\tanh(W_c[c^{<t-1>},x^{<t>}]+b_c)\\
+    \Gamma_u&=\sigma(W_u[c^{<t-1>},x^{<t>}]+b_u)\\
+    c^{<t>}&=\Gamma_u*\tilde{c}^{<t>}+(1-\Gamma_u)*c^{<t-1>}\\
+    a^{<t>}&=c^{<t>}
+  \end{split}
+\end{equation}
+where ``*'' is the elementwise multiplication.
+The full GRU uses an additional gate $\Gamma_r$ for emphasizing relevant units.
+\begin{equation}
+  \begin{split}
+    \tilde{c}^{<t>}&=\tanh(W_c[\Gamma_r*c^{<t-1>},x^{<t>}]+b_c)\\
+    \Gamma_u&=\sigma(W_u[c^{<t-1>},x^{<t>}]+b_u)\\
+    \Gamma_r&=\sigma(W_r[c^{<t-1>},x^{<t>}]+b_r)\\
+    c^{<t>}&=\Gamma_u*\tilde{c}^{<t>}+(1-\Gamma_u)*c^{<t-1>}\\
+    a^{<t>}&=c^{<t>}
+  \end{split}
+\end{equation}
+GRUs are much better at capturing long term dependencies.
+
+\subsubsection{Long Short Term Memory (LSTM)}
+\emph{Hochreiter and Schmidhuber, 1997, Long short-term memory}:
+LSTMs have an update gate $\Gamma_u$, a forget gate $\Gamma_f$, and an output gate $\Gamma_o$.
+\begin{equation}
+  \begin{split}
+    \tilde{c}^{<t>}&=\tanh(W_c[a^{<t-1>},x^{<t>}]+b_c)\\
+    \Gamma_u&=\sigma(W_u[a^{<t-1>},x^{<t>}]+b_u)\\
+    \Gamma_f&=\sigma(W_f[a^{<t-1>},x^{<t>}]+b_f)\\
+    \Gamma_o&=\sigma(W_o[a^{<t-1>},x^{<t>}]+b_o)\\
+    c^{<t>}&=\Gamma_u*\tilde{c}^{<t>}+\Gamma_f*c^{<t-1>}\\
+    a^{<t>}&=\Gamma_o*\tanh c^{<t>}
+  \end{split}
+\end{equation}
+A variation of the LSTM uses ``peephole connections'', making the gates depend on $c^{<t-1>}$ as well.
+
 \end{document}
