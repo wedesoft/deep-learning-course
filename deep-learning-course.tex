@@ -1588,4 +1588,16 @@ The total loss is computed by summation over the time steps:
 \end{equation}
 The most significant backpropagation is through time for the sequence of activations.
 
+\subsubsection{Different types of RNNs}
+\emph{Andrej Karpathy: The Unreasonable Effectiveness of Recurrent Neural Networks}:
+In some cases $T_x\neq T_y$.
+Examples of RNN architectures:
+\begin{itemize}
+  \item one-to-one (standard neural network)
+  \item many-to-many (online/real-time) (\emph{e.g.} name entity recognition)
+  \item many-to-one (\emph{e.g.} sentiment analysis)
+  \item one-to-many (\emph{e.g.} music generation)
+  \item many-to-many (encoder and decoder part) with different input and output sizes (\emph{e.g.} machine translation)
+\end{itemize}
+
 \end{document}
