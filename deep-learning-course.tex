@@ -1422,7 +1422,7 @@ which given a pair of images outputs a low value if they are from the same perso
 Face recognition is performed by comparing the input image with all $K$ images in the database.
 The function $d$ is trained using only one shot of each person.
 
-\subsubsection{Siamese Network}
+\subsubsection{Siamese Network}\label{cha:siamese}
 \emph{Taigman et al., 2014, DeepFace closing the gap to human level performance}:
 A siamese network $f$ is a network given to images $x^{(i)}$ and $x^{(j)}$ allows you to define the distance function as follows
 \begin{equation}
@@ -1625,8 +1625,8 @@ one can \emph{e.g.} predict the probability of
 \subsubsection{Sampling novel sequences}
 The language model allows you to sample according to the softmax outputs of the RNN.
 In Python one can use np.random.choice.
-The end of the sentence is represented using the <eos> token.
-One can reject the <unk> word.
+The end of the sentence is represented using the $\mathrm{<eos>}$ token.
+One can reject the $\mathrm{<unk>}$ word.
 It is also possible to build a character-level RNN instead of a word-level RNN.
 The disadvantage is that character-level RNNs need to process longer sequences which makes them harder and more computationally expensive to train.
 
@@ -1692,5 +1692,70 @@ There are activations $a^{[l]<t>}$ for each layer $l$ and each timestep $t$.
 \begin{equation}
   a^{[l]<t>}=g(W_a^{[l]}[a^{[l]<t-1>},a^{[l-1]<t>}]+b_a^{[l]})
 \end{equation}
+
+\subsection{NLP and Word Embeddings}
+\subsubsection{Word Representations}
+Words can be represented using a vocabulary and one-hot vectors.
+However one-hot representations do not generalise well when learning language
+(the distance between any two words is the same).
+Word embeddings are a featurized representation of words.
+One can use t-SNE to visualise clusters of words.
+
+\subsubsection{Using word embeddings}
+To solve the named entity recognition task one can use a word embedding trained on a large number of words.
+The name entity recognition then can use the word vectors to train named entities on a small dataset (transfer learning)
+using a BRNN.
+Word embeddings create dense vectors and thus allows for a smaller model.
+Optionally one can finetune the word embeddings (if the task has a big dataset).
+Word embeddings are similar to face encodings (see \cref{cha:siamese}).
+
+\subsubsection{Properties of word embeddings}
+Word embeddings can be used to reason about analogies.
+\emph{E.g.} man is to woman as king is to queen.
+The word embeddings have similar differences: $e_{man}-e_{woman}\approx e_{king}-e_{queen}$.
+Word similarity between $u$ and $v$ is defined as $\frac{u^\top v}{||u||_2||v||_2}$.
+
+\subsubsection{Embedding matrix}
+The embedding matrix has the embedding of a word in each column.
+Multiplying the matrix with a word's one-hot vector returns the word embedding.
+\begin{equation}
+  E\cdot o_j=e_j=\mathrm{embedding\ for\ word\ j}
+\end{equation}
+
+\subsubsection{Learning word embeddings}
+One can map words from a sentence using their embeddings and then
+use a neural network with a softmax classifier to try to predict the next word in the text.
+Optimizing the predictor yields the weights of a predictor as well as the word embedding matrix $E$.
+
+\subsubsection{Word2Vec}
+\emph{Mikolov et al., 2013, Efficient estimation of word representations in vector space}:
+Skip-grams given a context word randomly pick a nearby target word to predict.
+The network for learning embeddings works as follows
+\begin{equation}
+  \hat{y}=softmax(\underbrace{Eo_c}_{e_c})
+\end{equation}
+The input is a one-hot vector $o_c$.
+The output of the softmax unit is
+\begin{equation}
+  p(t|c)=\frac{e^{\theta_t^\top e_c}}{\sum_je^{\theta_j^\top e_c}}
+\end{equation}
+The loss function is $\mathcal{L}(\hat{y},y)=-\sum_iy_i\log\hat{y}_i$.
+$E$ and $\sigma$ are parameters to train.
+In the literature a hierarchical softmax is used for performance reasons.
+The sampling of the context is performed such that frequent words are not sampled much more often than rare words.
+
+\subsubsection{Negative Sampling}
+\emph{Mikolov et al., 2013, Distributed representation of words and phrases and their compositionality}:
+Negative sampling is a modified learning problem which is much more efficient (no softmax).
+Given a context word $c$, a positive target $t$ (label $1$) is identified
+and $k$ random negative examples for $t$ are also selected (label $0$).
+$k$ is small for large datasets and bigger for small datasets.
+The learning problem then is to predict the label given the context and label as input.
+The model is
+\begin{equation}
+  P(y=1|c,t)=\sigma(\theta_t^\top e_c)
+\end{equation}
+The parameters of the model are $E$ and $\theta$.
+The $k$ Words are sampled with the observed frequency of the word to the power of $3/4$.
 
 \end{document}
