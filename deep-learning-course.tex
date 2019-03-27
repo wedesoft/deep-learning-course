@@ -1747,7 +1747,7 @@ The sampling of the context is performed such that frequent words are not sample
 \subsubsection{Negative Sampling}
 \emph{Mikolov et al., 2013, Distributed representation of words and phrases and their compositionality}:
 Negative sampling is a modified learning problem which is much more efficient (no softmax).
-Given a context word $c$, a positive target $t$ (label $1$) is identified
+Given a context word $c$, a positive target $t$ (label $1$) in the vincinity is identified
 and $k$ random negative examples for $t$ are also selected (label $0$).
 $k$ is small for large datasets and bigger for small datasets.
 The learning problem then is to predict the label given the context and label as input.
@@ -1757,5 +1757,39 @@ The model is
 \end{equation}
 The parameters of the model are $E$ and $\theta$.
 The $k$ Words are sampled with the observed frequency of the word to the power of $3/4$.
+
+\subsubsection{GloVe word vectors}
+\emph{Pennington et al., 2014, GloVe: Global vectors for word representation}:
+\begin{equation}
+  X_{ij}=\mathrm{\#\ times\ i\ appears\ in context\ of\ j}
+\end{equation}
+GloVe minimizes the following model
+\begin{equation}
+  \mathrm{minimize\ }\sum_i\sum_jf(X_{ij})(\theta_i^\top e_j + b_i + b_j - \log X_{ij})^2
+\end{equation}
+$f$ is a weighting term. $f$ is zero if $X_{ij}$ is zero.
+Note that $\theta_i$ and $e_j$ are symmetric.
+One can choose the final parameter as follows: $e_w^{(final)}=\frac{e_w+\theta_w}{2}$.
+The algorithm will in general choose axes which are not aligned with the coordinate axes of the vector space.
+
+\subsection{Applications using Word Embeddings}
+\subsubsection{Sentiment Classification}
+The input $x$ is a piece of text, the output $y$ is the star rating.
+The words get converted to vectors by multiplying with the embedding $E$.
+A RNN with a softmax classifier then is used for sentiment analysis.
+
+\subsubsection{Debiasing word embeddings}
+\emph{Bolukbasi et. al, 2016. Man is to computer programmer as woman is to homemaker? Debiasing word embeddings}:
+Learned word embeddings can learn a gender bias.
+\emph{E.g.} ``Man is to computer programmer as woman is to homemaker.'' or
+``Father is to doctor as mother is to nurse.''.
+Word embeddings can reflect gender, ethnicity, age, sexual orientation, and other biases of the text used to train the model.
+\begin{enumerate}
+  \item Identify bias direction (\emph{e.g.} compute $e_{he}-e_{she}$, $e_{male}-e_{female}$, ... and take average
+    (in the paper a SVD is used to identify principal components)
+  \item Neutralize: For every word that is not definitional, project to get rid of bias.
+  \item Equalize pairs (\emph{i.e.} gender words (\emph{e.g.} grandmother/grandfather, girl/boy, ...)
+    should have the same distance from the projection plane.
+\end{enumerate}
 
 \end{document}
