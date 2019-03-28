@@ -115,7 +115,7 @@ Logistic regression over multiple training examples works by simply summing up t
   \frac{\partial}{\partial w_1}J(w,b)=\frac{1}{m}\sum_{i=1}^m\underbrace{\frac{\partial}{\partial w_1}\mathcal{L}(a^{(i)},y^{(i)})}_{dw_1^{(i)}}
 \end{equation}
 See \cref{fig:logistic-regression} for more detail.
-\begin{figure}
+\begin{figure}[htbp]
   \begin{center}
     \includegraphics[width=\textwidth]{logistic-regression}
     \caption{Logistic regression on $m$ examples}
@@ -1255,7 +1255,7 @@ To reduce the computational cost, one can use a ``bottleneck layer'' ($1\times 1
 
 \subsubsection{Inception Network}
 \Cref{fig:inception} shows a module of the Inception network.
-\begin{figure}
+\begin{figure}[htbp]
   \begin{center}
     \includegraphics[width=\textwidth]{inception}
     \caption{Inception module}
@@ -1340,7 +1340,7 @@ This algorithm is called ``sliding windows detection''.
 One can turn a fully connected layers into a $1\times 1$ convolutional layers (see \cref{fig:convslide}).
 Running the same algorithm on the full image instead of the slidding window, one obtains the results for all window positions
 while reusing a lot of the computation which is identical between different overlapping slidding windows.
-\begin{figure}
+\begin{figure}[htbp]
   \begin{center}
     \includegraphics[width=\textwidth]{convslide}
     \caption{Implementing sliding window using $1\times 1$ convolutional layers}
@@ -1865,5 +1865,27 @@ where $bp$ is the brevity penalty.
 \end{equation}
 The Bleu score is a \emph{single real-number evaluation metric} which helps comparing and developing machine translation algorithms.
 The Bleu score can also be used for image captioning where multiple different captions can be valid.
+
+\subsubsection{Attention Model Intuition}
+\emph{Bahdanau et al. 2014, Neural machine translation by jointly learning to align and translate.}:
+It is difficult for a decoder-encoder architecture to remember very long sentences.
+\emph{I.e.} the Bleu score for long sentences goes down.
+One can use a BRNN (bidirectional RNN) in the first layer and then compute attention values to define the context for a second RNN layer.
+
+\subsubsection{Attention Model}
+The attention model uses attention values $\alpha^{<t,t^\prime>}$ as shown in \cref{fig:attention}.
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width=\textwidth]{attention}
+    \caption{A BRNN and RNN using attention values}
+    \label{fig:attention}
+  \end{center}
+\end{figure}
+Similar to softmax activations, the attention values are defined as
+\begin{equation}
+  \alpha^{<t,t^\prime>}=\frac{exp(e^{<t,t^\prime>})}{\sum_{t^\prime=1}^{T_x}exp(e^{<t,t^\prime>})}
+\end{equation}
+so that the values $\alpha^{<t,t^\prime>}$ add up to $1$ when summing over $t^\prime$.
+$a^{<t^\prime>}$ and $s^{<t-1>}$ serve as input for a small neural network to compute $e^{<t,t^\prime>}$.
 
 \end{document}
