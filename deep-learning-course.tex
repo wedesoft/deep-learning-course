@@ -1600,7 +1600,7 @@ Examples of RNN architectures:
   \item many-to-many (encoder and decoder part) with different input and output sizes (\emph{e.g.} machine translation)
 \end{itemize}
 
-\subsubsection{Language model and sequence generation}
+\subsubsection{Language model and sequence generation}\label{cha:langmod}
 A language model assigns a probability to each sentence.
 The language model is trained using a large corpus of english text.
 A sentence is represented using words and a final token: $y^{<1>}, y^{<2>},\ldots,\mathrm{<eos>}$.
@@ -1791,5 +1791,61 @@ Word embeddings can reflect gender, ethnicity, age, sexual orientation, and othe
   \item Equalize pairs (\emph{i.e.} gender words (\emph{e.g.} grandmother/grandfather, girl/boy, ...)
     should have the same distance from the projection plane.
 \end{enumerate}
+
+\subsection{Various sequence to sequence architectures}
+\subsubsection{Basic Models}
+\emph{Sutskever et al., 2014, Sequence to sequence learning with neural networks} and
+\emph{Cho et al., 2014, Learning phrase representations using RNN encoder-decoder for statistical machine translation}:
+One can build a encoder network which finds an encoding of a sentence.
+A decoder network then generates the translation.
+
+\emph{Mao et al., 2014, Deep captioning with multimodal recurrent neural networks}:
+Image captioning works in a similar fashion.
+One can use the pretrained AlexNet (without the final softmax layer) and feed it to an RNN to generate a caption.
+
+\subsubsection{Picking the most likely sentence}
+In machine translation, instead of sampling the distribution of sentences (as in \cref{cha:langmod}),
+one wants to find the most likely translation for the given input.
+\begin{equation}
+  \mathop{\operatorname{argmax}}_{y^{<1>},\ldots,y^{<T_y>}}P(y^{<1>},\ldots,y^{<T_y>}|x)
+\end{equation}
+It is desired to pick the sentence that maximizes the joint probability of the whole sentence.
+
+\subsubsection{Beam Search}
+Beam search is the most widely used algorithm for selecting the most likely translation.
+While greedy search would pick the most likely word when starting the sentence,
+beam search will consider the $B$ out of $n$ most likely choices (\emph{e.g.} $B=3$) output by the softmax classifier.
+Then the $n$ probabilities of the second word are evaluated for each choice of first word yielding $B*n$ choices.
+Then again all but the most likely $B$ choices are discarded.
+Then beam search continues to the next word.
+In the special case of $B=1$, beam search is the same as a greedy search.
+Production systems use something like up to $B=10$ whilst research publications use larger values of $B$.
+$B$ is sometimes called the beam width.
+
+\subsubsection{Refinements to Beam Search}
+Instead of maximising the product of probabilities
+\begin{equation}
+  \mathop{\operatorname{argmax}}_y \prod_{t=1}^{T_y} P(y^{<t>}|x,y^{<1>},\ldots,y^{<t-1>})
+\end{equation}
+in practice on minimizes the sum of the log-probabilities to avoid numerical underflow
+\begin{equation}
+  \mathop{\operatorname{argmax}}_y \sum_{t=1}^{T_y} \log P(y^{<t>}|x,y^{<1>},\ldots,y^{<t-1>})
+\end{equation}
+Furthermore the problem is that beam search is biased towards short sentences because they are assigned higher probabilities.
+To address this, one performs length normalization of the log-likelihood
+\begin{equation}
+  \mathop{\operatorname{argmax}}_y \frac{1}{T_y^\alpha}\sum_{t=1}^{T_y} \log P(y^{<t>}|x,y^{<1>},\ldots,y^{<t-1>})
+\end{equation}
+using \emph{e.g.} $\alpha=0.7$.
+
+\subsubsection{Error analysis in beam search}
+The beam search algorithm is a heuristic which does not always yield the best or correct result.
+To identity errors caused by beam search as opposed to errors caused by the RNN,
+one can compute $P(y^*|x)$ of the correct/desired result $y^*$ and $P(\hat{y}|x)$ of the result $\hat{y}$ returned by the RNN.
+If $P(y^*|x)$ is higher than $P(\hat{y}|x)$, then the beam search is failing to return the correct result.
+Note that the optimization objective should be used instead of $P$ when using length normalization.
+
+The error analysis process is to examine a set of examples where the algorithm failed and decide using above criteria
+to check whether beam search or the RNN failed.
 
 \end{document}
