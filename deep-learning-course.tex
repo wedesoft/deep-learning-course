@@ -1848,4 +1848,22 @@ Note that the optimization objective should be used instead of $P$ when using le
 The error analysis process is to examine a set of examples where the algorithm failed and decide using above criteria
 to check whether beam search or the RNN failed.
 
+\subsubsection{Bleu score}
+\emph{Papineni et al., 2002, A method for automatic evaluation of machine translation}:
+Language translation often has multiple right answers.
+The bilingual evaluation understudy (Bleu) score.
+Precision $p_1$ counts how many words (unigrams) of the machine translation are present in the reference
+divided by the number of words in the machine translation.
+If a word occurs multiple times in the machine translation, it only scores up to the maximum number of occurences in a reference sentence.
+In the same way the Bleu score $p_2$ for bigrams (two consecutive words in the machine translation) is defined.
+$p_n$ is the corresponding score for n-grams.
+The combined Bleu score is $bp\cdot e^{\frac{1}{4}\sum_{n=1}^4 p_n}$
+where $bp$ is the brevity penalty.
+\begin{equation}
+  bp=\left\{\begin{array}{l}1\ \mathrm{if}\ MT\_output\_length > reference\_output\_length\\
+  exp(1-MT\_output\_length/reference\_output\_length)\ \mathrm{otherwise}\end{array}\right.
+\end{equation}
+The Bleu score is a \emph{single real-number evaluation metric} which helps comparing and developing machine translation algorithms.
+The Bleu score can also be used for image captioning where multiple different captions can be valid.
+
 \end{document}
