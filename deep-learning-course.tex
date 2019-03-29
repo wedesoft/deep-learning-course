@@ -1888,4 +1888,35 @@ Similar to softmax activations, the attention values are defined as
 so that the values $\alpha^{<t,t^\prime>}$ add up to $1$ when summing over $t^\prime$.
 $a^{<t^\prime>}$ and $s^{<t-1>}$ serve as input for a small neural network to compute $e^{<t,t^\prime>}$.
 
+\subsection{Speech recognition}
+\subsubsection{Speech recognition}
+Given an audio clip $x$ one has to automatically find a transcript $y$.
+A common preprocessing step for audio data is to make a spectrogram.
+Using end-to-end learning it is not necessary to use phonemes (intermediate representation) any more.
+However typically 3,000 hours of transcribed audio data (or even much more) is used.
+
+\emph{Graves et al. 2006, Connectionist Temporal Classification: Labeling unsegmented sequence data with recurrent neural networks}:
+Speech recognition algorithms can be trained using the Connectionist temporal classification (CTC) cost.
+The audio input is usually split into small segments (\emph{e.g.} 10 milliseconds).
+Repeated output characters not separated by ``blank'' are collapsed.
+\emph{E.g.} ttt\_h\_eee\_\_\_\textvisiblespace\_\_\_qqq\_\_ becomes ``the\textvisiblespace q''.
+The neural network then is allowed to repeat a character many times.
+
+\subsubsection{Trigger Word Detection}
+Trigger words are used to wake up a speech recognition device.
+The RNN is a many-to-many network.
+The output label for each audio frame is ``0'' by default and then ``1'' a few times after the trigger word was said.
+(``1'' is specified multiple times so that the labels are more balanced).
+
+\subsection{Conclusion}
+The topics in this course were
+\begin{itemize}
+  \item Neural Networks and Deep Learning
+  \item Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization
+  \item Structuring Machine Learning Projects
+  \item Convolutional Neural Networks
+  \item Sequence Models
+\end{itemize}
+We hope that you will use deep learning to improve the world.
+
 \end{document}
