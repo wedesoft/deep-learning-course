@@ -614,7 +614,7 @@ Unlike batch gradient descent, when using mini-batch gradient descent, the cost 
 In practise one uses a mini-batch size between the to extremes $1$ and $m$.
 The reason is that vectorization is still used and the convergence is faster.
 \begin{itemize}
-  \item if your training set, just use batch gradient descent ($m\le 2000$)
+  \item if your training set is small, just use batch gradient descent ($m\le 2000$)
   \item typical mini-batch sizes: $64,128,\ldots,1024$
   \item make sure $(X^{\{t\}},Y^{\{t\}})$ fits into CPU/GPU memory
 \end{itemize}
