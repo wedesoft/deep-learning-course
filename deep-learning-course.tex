@@ -1919,4 +1919,48 @@ The topics in this course were
 \end{itemize}
 We hope that you will use deep learning to improve the world.
 
+\appendix
+
+\section{Reinforcement Learning}
+See lecture at \url{https://www.youtube.com/watch?v=RtxI449ZjSc}.
+Reinforcement learning uses a reward function for sequences of actions.
+The problem in reinforcement learning is that generally there is a delay between an action and the reward.
+In particular the \emph{credit assignment problem} is that the algorithm has to figure out
+which action in a sequence of actions caused the reward/penalty.
+\emph{E.g.} in an car accident stepping on the brakes does not cause a crash, it is rather something you have done before that.
+The Markov Decision Process $MDP(S,A,P_{sa},\gamma,R)$ comprises of
+\begin{itemize}
+  \item $S$ is a set of states.
+  \item $A$ is a set of actions.
+  \item $P_{sa}$ are the state transition distributions $\sum_{s^\prime} P_{sa}(s^\prime)=1$, $P_{sa}(s^\prime)\ge 0$,
+    given a state $s$ and an action $a$ the value $P_{sa}(s^\prime)$ is the probability of ending up in state $s^\prime$.
+  \item $\gamma$ is the discount factor ($0 \le \gamma < 1$).
+  \item $R$ is the reward function $R : S \mapsto \mathbb{R}$
+\end{itemize}
+It is common for navigation tasks to have +1 for the goal, -1 for crashes,
+and a small negative reward for other states (\emph{i.e.} penalising battery use).
+One can add a ``zero-cost absorbing state'' to model termination after reaching the goal.
+
+The robot starts at state $s_0$.
+Given an action $a_0$ the robot goes into state $s_1 \sim P_{s_0 a_0}$.
+Then $a_1$ is chosen and the robot transitions into state $s_2 \sim P_{s_1 a_1}$, etc.
+The cumulative reward (total payoff) is $R(s_0)+\gamma R(s_1)+\gamma^2 R(s_2)+\ldots$.
+The goal of the reinforcement algorithm is to choose actions over time ($a_0,a_1,\ldots$)
+to maximise the expectation value of the total payoff $E[R(s_0)+\gamma R(s_1)+\gamma^2 R(s_2)+\ldots]$ and
+to come up with a policy $\Pi:S\mapsto A$.
+For any $\Pi$ define $V^\Pi:S\mapsto \mathbb{R}$.
+$V^\Pi(s)$ is the expected payoff starting in state $s$ and executing $\Pi$.
+\begin{equation}
+  V^\Pi(s)=E[R(s_0)+\gamma R(s_1)+\ldots|\Pi,s_0=s]
+\end{equation}
+Note that
+\begin{equation}
+  V^\Pi(s)=E[R(s_0)+\gamma(\underbrace{R(s_1)+\gamma R(s_2)+\ldots}_{V^\Pi(s_1)})|\Pi,s_0=s]
+\end{equation}
+where $R(s_0)$ is the ``immediate reward'' and the other rewards are called ``future rewards''.
+$V^\Pi(s)$ can be written recursively (using $s_0=s$ and $s_1=s^\prime$) when using the policy $\Pi$ as follows:
+\begin{equation}
+  V^\Pi(s)=R(s)+\gamma \sum_{s^\prime} P_{s\Pi(s)}(s^\prime) V^\Pi(s^\prime)
+\end{equation}
+
 \end{document}
