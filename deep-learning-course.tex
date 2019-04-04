@@ -1922,7 +1922,8 @@ We hope that you will use deep learning to improve the world.
 \appendix
 
 \section{Reinforcement Learning}
-See lecture at \url{https://www.youtube.com/watch?v=RtxI449ZjSc}.
+\subsection{Markov Decision Process}
+See lecture at \url{https://www.youtube.com/watch?v=RtxI449ZjSc} (Lecture 16, Machine learning, Andrew Ng).
 Reinforcement learning uses a reward function for sequences of actions.
 The problem in reinforcement learning is that generally there is a delay between an action and the reward.
 In particular the \emph{credit assignment problem} is that the algorithm has to figure out
@@ -1941,6 +1942,7 @@ It is common for navigation tasks to have +1 for the goal, -1 for crashes,
 and a small negative reward for other states (\emph{i.e.} penalising battery use).
 One can add a ``zero-cost absorbing state'' to model termination after reaching the goal.
 
+\subsection{Bellman equation}
 The robot starts at state $s_0$.
 Given an action $a_0$ the robot goes into state $s_1 \sim P_{s_0 a_0}$.
 Then $a_1$ is chosen and the robot transitions into state $s_2 \sim P_{s_1 a_1}$, etc.
@@ -1962,5 +1964,54 @@ $V^\Pi(s)$ can be written recursively (using $s_0=s$ and $s_1=s^\prime$) when us
 \begin{equation}
   V^\Pi(s)=R(s)+\gamma \sum_{s^\prime} P_{s\Pi(s)}(s^\prime) V^\Pi(s^\prime)
 \end{equation}
+This is called the ``Bellman equation''.
+Given $\Pi$ the equation for each state can be used as an equation system to solve for all $V^\Pi(s)$.
+The optimal value function is defined as the optimal value over all policies $\Pi$:
+\begin{equation}
+  V^\ast(s)=\max_\Pi V^\Pi(s)
+\end{equation}
+The policy $\Pi$ needs to choose the best action. \emph{I.e.}:
+\begin{equation}
+  V^\ast(s)=R(s)+\max_a \gamma \sum_{s^\prime} P_{sa}(s^\prime) V^\ast(s^\prime)
+\end{equation}
+The optimal policy is
+\begin{equation}
+  \Pi^\ast(s)=\mathop{\operatorname{argmax}}_a \sum_{s^\prime} P_{sa}(s^\prime)V^\ast(s^\prime)
+\end{equation}
+
+\subsubsection{Iterative algorithms}
+The \emph{value iteration} algorithm works as follows
+\begin{itemize}
+  \item Initialize $V(s)=0\mathrm{\ }\forall s\in S$
+  \item For every $s$ update $V(s)\coloneqq R(s) + \max_a \gamma \sum_{s^\prime} P_{sa}(s^\prime) V(s^\prime)$
+  \item Repeat previous step
+\end{itemize}
+This will make $V(s)$ converge on $V^\ast(s)$.
+You can update all $V(s)$ synchronously or asynchronously (sequentially).
+
+The other standard algorithm is \emph{policy iteration}
+\begin{itemize}
+  \item Initialize $\Pi$ randomly
+  \item Let $V\coloneqq V^\Pi$ (solve Bellman's equations)
+  \item Let $\Pi(s)\coloneqq\mathop{\operatorname{argmax}}_a \sum_{s^\prime} P_{sa}(s^\prime)V(s^\prime)$
+\end{itemize}
+This will make $V$ converge on $V^\ast$ and $\Pi$ on $\Pi^\ast$.
+For large MDPs one tends to use value iteration because it does not require solving a large equation system.
+
+\subsection{What if transition probability not known?}
+What if $P_{sa}(s^\prime)$ is not known?
+In this case $P_{sa}$ is estimated from data.
+\emph{I.e.} divide number of times action $a$ in $s$ and got to $s^\prime$ by
+number of times took action $a$ in state $s$ (initially defaulting to uniform distribution if number of times is zero).
+Putting it together:\\
+Repeat
+\begin{itemize}
+  \item Take action using $\Pi$ to get experience in MDP.
+  \item Update estimates of $P_{sa}$
+  \item Solve Bellman's equations or use value iteration to get $V$
+  \item update your policy $\Pi(s)=\mathop{\operatorname{argmax}}_a \sum_{s^\prime} P_{sa}(s^\prime) V(s^\prime)$
+\end{itemize}
+
+% 37:00
 
 \end{document}
