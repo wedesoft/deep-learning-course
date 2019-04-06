@@ -1923,7 +1923,7 @@ We hope that you will use deep learning to improve the world.
 
 \section{Reinforcement Learning}
 \subsection{Markov Decision Process}
-See lecture at \url{https://www.youtube.com/watch?v=RtxI449ZjSc} (Lecture 16, Machine learning, Andrew Ng).
+See lecture at \url{https://www.youtube.com/watch?v=RtxI449ZjSc} (Lecture 16-20, Machine learning, Andrew Ng).
 Reinforcement learning uses a reward function for sequences of actions.
 The problem in reinforcement learning is that generally there is a delay between an action and the reward.
 In particular the \emph{credit assignment problem} is that the algorithm has to figure out
@@ -2012,6 +2012,30 @@ Repeat
   \item update your policy $\Pi(s)=\mathop{\operatorname{argmax}}_a \sum_{s^\prime} P_{sa}(s^\prime) V(s^\prime)$
 \end{itemize}
 
-% 37:00
+\subsection{Continuous states}
+The state space $S$ can be continuous.
+A car for example has position, rotation, speed, and angular speed (6 dof).
+A helicopter has twelve degrees of freedom.
+The inverted pendulum is a long-running classic in reinforcement learning has four degrees of freedom.
+Discretizing the state space leads to inaccuracies and also suffers from the curse of dimensionality (lot of combinations).
+The solution is to approximate $V^\ast$ more directly.
+Here the action space $A$ stays discrete (the action space usually is discretized much more easily than the state space).
+Further assumption is that you have a model/simulator of the MDP (Markov Decision Process).
+The model takes $s$ and $a$ as input and outputs a new state $s^\prime$.
+\emph{E.g.} a deterministic model $s_{t+1}=s_t+\Delta t\cdot\ldots$.
+Alternatively one can learn a model to estimate the state vector $s_{t+1}$ as a function of $s_t$ and $a_t$
+from multiple sequences of states and actions (for example captured while manually controlling the system).
+For example using model
+\begin{equation}
+  s_{t+1}=As_t+Ba_t
+\end{equation}
+one minimizes
+\begin{equation}
+  \mathop{\operatorname{argmin}}_{A,B}\sum_{i=1}^m\sum_{t=0}^{T-1}||s^{(i)}_{t+1}-(As^{(i)}_t+Ba^{(i)}_t)||
+\end{equation}
+Using a normally distributed error $\epsilon_t\sim\mathcal{N}(0,\mathcal{E})$ one can implement a stochastic model
+\begin{equation}
+  s_{t+1}=As_t+Ba_t+\epsilon_t
+\end{equation}
 
 \end{document}
