@@ -2037,5 +2037,32 @@ Using a normally distributed error $\epsilon_t\sim\mathcal{N}(0,\mathcal{E})$ on
 \begin{equation}
   s_{t+1}=As_t+Ba_t+\epsilon_t
 \end{equation}
+One chooses a vector of features $\phi(s)$ for $s$.
+The value function gets approximated as $V(s)=\Theta^\top\phi(s)$.
+Value iteration is
+\begin{equation}
+  V(s)\coloneqq R(s)+\gamma\max_a\sum_{s^\prime}P_{sa}(s^\prime)V(s)=
+  R(s)+\gamma\max_a E_{s^\prime\sim P_sa}[V(s^\prime)]
+\end{equation}
+\subsection{Fitted value iteration}
+\begin{itemize}
+  \item Sample $\{s^{(1)},s^{(2)},\ldots,s^{(m)}\}\in S$ randomly.
+  \item Initialise $\Theta\coloneqq 0$
+  \item Repeat
+    \begin{itemize}
+      \item For $i=1,\ldots,m$
+        \begin{itemize}
+          \item For each action $a\in A$
+            \begin{itemize}
+              \item Sample $s^\prime_1,\ldots,s^\prime_k\sim P_{s^{(i)}a}$ (using model)
+              \item Let $q(a)=\frac{1}{k}\sum_{j=1}^k [R(s^{(i)})+\gamma V(s^\prime_j)]$
+                be estimate for $R(s^{(i)})+\gamma E_{s\prime\sim P_{s^{(i)}a}}[V(s^\prime)]$
+            \end{itemize}
+          \item Set $y^{(i)}=\max_a q(a)$ (estimate for $R(s^{(i)})+\gamma\max_a E_{s\prime\sim P_{s^{(i)}a}}[V(s^\prime)]$)
+        \end{itemize}
+      \item want $V(s^{(i)})\approx y^{(i)}$
+      \item $\Theta\coloneqq\mathop{\operatorname{argmin}}_\Theta\frac{1}{2}\sum_{i=1}^m(\Theta^\top\phi(s^{(i)})-y^{(i)})^2$
+    \end{itemize}
+\end{itemize}
 
 \end{document}
