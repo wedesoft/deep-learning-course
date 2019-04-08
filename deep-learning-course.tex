@@ -2044,7 +2044,8 @@ Value iteration is
   V(s)\coloneqq R(s)+\gamma\max_a\sum_{s^\prime}P_{sa}(s^\prime)V(s)=
   R(s)+\gamma\max_a E_{s^\prime\sim P_sa}[V(s^\prime)]
 \end{equation}
-\subsection{Fitted value iteration}
+\subsection{Fitted value iteration}\label{cha:fittedvi}
+Using the approximation $V(s)=\Theta^\top\phi(s)$ one can implement the following algorithm for continuous state space $S$.
 \begin{itemize}
   \item Sample $\{s^{(1)},s^{(2)},\ldots,s^{(m)}\}\in S$ randomly.
   \item Initialise $\Theta\coloneqq 0$
@@ -2064,5 +2065,18 @@ Value iteration is
       \item $\Theta\coloneqq\mathop{\operatorname{argmin}}_\Theta\frac{1}{2}\sum_{i=1}^m(\Theta^\top\phi(s^{(i)})-y^{(i)})^2$
     \end{itemize}
 \end{itemize}
+If the model/simulator is deterministic, one can use $k=1$.
+
+\subsection{Policy with continuous state space}
+The optimal policy given $V^\ast$ is the same as in the discrete case:
+\begin{equation}
+  \Pi^\ast(s)=\mathop{\operatorname{argmax}}_a E_{s^\prime\sim P_{sa}}[V^\ast(s^\prime)]
+\end{equation}
+In the continuous case it is not possible to compute $\Pi^\ast$ ahead of time any more.
+Again the expectation is approximated by using $k$ samples (see \cref{cha:fittedvi}).
+If $P_{sa}$ is deterministic, one can use $s^\prime=f(s,a)$ to simplify as follows
+\begin{equation}
+  \Pi^\ast(s)=\mathop{\operatorname{argmax}}_a V^\ast(f(s,a))
+\end{equation}
 
 \end{document}
