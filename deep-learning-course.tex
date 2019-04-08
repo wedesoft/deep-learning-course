@@ -2079,4 +2079,18 @@ If $P_{sa}$ is deterministic, one can use $s^\prime=f(s,a)$ to simplify as follo
   \Pi^\ast(s)=\mathop{\operatorname{argmax}}_a V^\ast(f(s,a))
 \end{equation}
 
+Another common case is a stochastic simulator with zero mean Gaussian noise $\epsilon_t$
+\begin{equation}
+  s_{t+1}=f(s_t,a_t)+\epsilon_t
+\end{equation}
+\emph{E.g.} the linear system $s_{t+1}=As_t+Ba_t+\epsilon_t$.
+In the stochastic simulator one can approximate the expected value for the value function as follows:
+\begin{equation}
+  E_{s^\prime\sim P_{sa}}[V^\ast(s^\prime)]\approx V^\ast(E[s^\prime])=V^\ast(f(s,a))
+\end{equation}
+The policy then again is
+\begin{equation}
+  \Pi^\ast(s)=\mathop{\operatorname{argmax}}_a\underbrace{V^\ast(f(s,a))}_{\Theta^\top\phi(f(s,a))}
+\end{equation}
+
 \end{document}
