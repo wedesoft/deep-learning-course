@@ -2093,4 +2093,33 @@ The policy then again is
   \Pi^\ast(s)=\mathop{\operatorname{argmax}}_a\underbrace{V^\ast(f(s,a))}_{\Theta^\top\phi(f(s,a))}
 \end{equation}
 
+\subsection{Different formulations}
+\subsubsection{State-action rewards}
+One can have a reward function $R:S\times A->\mathbb{R}$ which depends on the state as well as the action.
+With state-action rewards the Bellman equation becomes
+\begin{equation}
+  V^\ast(s)=\max_a R(s,a)+\gamma\sum_{s^\prime}P_{sa}(s^\prime)V^\ast(s^\prime)
+\end{equation}
+
+\subsubsection{Finite horizon MDPs}
+A finite horizon MDP is defined as $MDP(S,A,\{P^{(t)}_{sa}\},T,R)$ where $T$ is the horizon time.
+The total payoff is $R^{(0)}(s_0,a_0)+R^{(1)}(s_1,a_1)+\ldots+R^{(T)}(s_T,a_T)$.
+In this case the optimal policy is non-stationary (changes with time).
+The transition probability may also depend on time: $s_{t+1}\sim P_{sa}^{(t)}$ (\emph{e.g.} changing dynamics of airplane with decreasing fuel).
+The optimal value function is
+\begin{equation}
+  V^\ast_t(s)=E[R^{(t)}(s_t,a_t)+\ldots+R^{(T)}(s_T,a_T)|\Pi^\ast,s_t=s]
+\end{equation}
+The Bellman equation is
+\begin{equation}
+  \begin{split}
+    V^\ast_T(s)&=\max_a R^{(T)}(s,a)\\
+    V^\ast_t(s)&=\max_a R^{(t)}(s,a)+\sum_{s^\prime}P_{sa}^{(t)}(s^\prime)V^\ast_{t+1}(s^\prime)
+  \end{split}
+\end{equation}
+The optimal policy is
+\begin{equation}
+  \Pi^\ast_t(s)=\mathop{\operatorname{argmax}}_a R^{(t)}(s,a)+\sum_{s^\prime}P_{sa}(s^\prime)V^\ast_{t+1}(s^\prime)
+\end{equation}
+
 \end{document}
