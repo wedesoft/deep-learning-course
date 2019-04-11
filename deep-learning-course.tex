@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{txfonts}
 \usepackage{minted}
+\usepackage{mathtools}
 
 \begin{document}
 \section{Neural Networks and Deep Learning}
@@ -2140,5 +2141,27 @@ $U_t$ and $V_t$ are positive semi-definite.
 Choose $U_t=\mathcal{I}$, $V_t=\mathcal{I}$, $R(s_t,a_t)=-s_t^\top s_t-a_t^\top a_t=-||s_t||^2-||a_t||^2$.
 
 For understanding the material one can assume $A=A_1=A_2=\ldots$ and $B=B_1=B_2=\ldots$.
+
+\subsubsection{Coming up with a Linear Model}
+To come up with a linear model, one can observe sequences
+\begin{equation}
+  \begin{split}
+    s^{(1)}_0&\xrightarrow{a^{(1)}_0}s^{(1)}_1\xrightarrow{a^{(1)}_1}\ldots\rightarrow s^{(1)}_T\\
+             &\vdots\\
+    s^{(m)}_0&\xrightarrow{a^{(m)}_0}s^{(m)}_1\xrightarrow{a^{(m)}_1}\ldots\rightarrow s^{(m)}_T
+  \end{split}
+\end{equation}
+and then fit a model
+\begin{equation}
+  \mathop{\operatorname{argmin}}_{A,B}\frac{1}{2}\sum_{i=1}^m\sum_{t=1}^{T-1}||s_{t+1}-(As_t+Ba_t)||^2
+\end{equation}
+
+Another approach is to linearize a non-linear model $s_{t+1}=f(s_t,a_t)$ around a point $\bar{s}_t, \bar{a}_t$.
+\begin{equation}
+  s_{t+1}\approx
+  f(\bar{s}_t,\bar{a}_t)+
+  (\nabla_s f(\bar{s}_t,\bar{a}_t))^\top (s_t-\bar{s}_t)+
+  (\nabla_a f(\bar{s}_t,\bar{a}_t))^\top (a_t-\bar{a}_t)
+\end{equation}
 
 \end{document}
