@@ -2122,4 +2122,23 @@ The optimal policy is
   \Pi^\ast_t(s)=\mathop{\operatorname{argmax}}_a R^{(t)}(s,a)+\sum_{s^\prime}P_{sa}(s^\prime)V^\ast_{t+1}(s^\prime)
 \end{equation}
 
+\subsubsection{Linear Quadratic Regulation (LQR)}
+The following assumption is very common and allows you to handle very large MDPs.
+An MDP is defined using $S$, $A$, $\{P_{sa}\}$, $T$, and $R$.
+Here $S=\mathbb{R}^n$, $A=\mathbb{R}^d$.
+The transition probability is
+\begin{equation}
+  P_{sa}^{(t)}:s_{t+1}=A_ts_t+B_ta_t+w_t
+\end{equation}
+and the reward function is
+\begin{equation}
+  R^{(t)}(s_t,a_t)=-(s_t^\top U_ts_t+a_t^\top V_t a_t)
+\end{equation}
+where $w_t\sim\mathcal{N}(0,\mathcal{E}_w)$, $A_t,U_t\in\mathbb{R}^{n\times n}$, and $B_t,V_t\in\mathbb{R}^{n\times d}$.
+$U_t$ and $V_t$ are positive semi-definite.
+\emph{E.g.} a helicopter hovering where $s_t\approx 0$ is desired:
+Choose $U_t=\mathcal{I}$, $V_t=\mathcal{I}$, $R(s_t,a_t)=-s_t^\top s_t-a_t^\top a_t=-||s_t||^2-||a_t||^2$.
+
+For understanding the material one can assume $A=A_1=A_2=\ldots$ and $B=B_1=B_2=\ldots$.
+
 \end{document}
