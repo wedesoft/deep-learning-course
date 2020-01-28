@@ -1001,6 +1001,8 @@ If training set and dev set are from different distributions it is necessary to 
 a piece of the training set (a training-dev set) in order to be able to distinguish variance from data mismatch in the dev set.
 As before you can use human level error as a proxy for Bayes optimal error to estimate avoidable bias.
 
+If the dev-set performance is much better than the test-set performance, you are overfitting the dev-set and you need to find a larger dev-set.
+
 \subsubsection{Adressing data mismatch}
 \begin{itemize}
   \item Carry out error analysis to try to understand the difference between training and dev set
