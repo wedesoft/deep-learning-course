@@ -1022,6 +1022,7 @@ Also see \cref{fig:mismatch}.
 You can use artificial data synthesis to make the training data more similar to the dev set.
 Note that synthesized data can lack in variation and might only create a small subset of the data required
 which causes the neural network to overfit.
+\emph{E.g.} if you have 100,000 hours of speech data and use only 1 hour of car noise to synthesize data, the neural network might overfit.
 
 \subsection{Learning from multiple tasks}
 \subsubsection{Transfer learning}
