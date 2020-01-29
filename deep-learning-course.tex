@@ -1378,7 +1378,7 @@ while reusing a lot of the computation which is identical between different over
 The You Only Look Once (YOLO) algorithm divides up the image into a grid (\emph{e.g.} $19\times 19$).
 The training label for an image for example is a $19\times 19\times 8$ (where $8$ is as in \cref{cha:localize}).
 \emph{I.e.} for each grid cell there are $8$ output values.
-The bounding box coordinates are specified relative to the cell size.
+The bounding box coordinates are specified relative to the grid cell.
 Note that $b_w$ and $b_h$ can be bigger than one.
 
 \subsubsection{Intersection Over Union}
@@ -1425,10 +1425,11 @@ Then non-max suppressed outputs are produced
 \subsubsection{Region Proposals}
 \emph{Girshik et al., 2013, Rich feature hierarchies for accurate object detection and semantic segmentation}:
 The R-CNN algorithm segments the scene into a small number of interesting blobs.
-The convolutional network then is run on each region of interest.
+The convolutional network then is run on each region of interest (using a bounding box encapsulating the blob).
 For each of the regions a label and accurate bounding box are produced.
-Fast R-CNN uses the convolution implementation of sliding windows (see \cref{cha:cnnslide}) to classify all the proposed regions.
-Faster R-CNN uses a convolutional neural network to propose regions.
+
+\emph{Fast R-CNN} uses the convolution implementation of sliding windows (see \cref{cha:cnnslide}) to classify all the proposed regions.
+\emph{Faster R-CNN} uses a convolutional neural network to propose regions.
 However R-CNN tends to be slower than YOLO.
 
 \subsection{Face Recognition}
@@ -1437,7 +1438,7 @@ Example face recognition controlling the entrance gate at Baidu.
 Face verification and face recognition are two different problems.
 \begin{itemize}
   \item face verification: given image and name/ID output whether the input image is that of the claimed person
-  \item face recognition: given a database of $K$ persons and amn input image, output ID if the image is any of the $K$ persons (or ``not recognized'')
+  \item face recognition: given a database of $K$ persons and an input image, output ID if the image is any of the $K$ persons (or ``not recognized'')
 \end{itemize}
 Face recognition is much harder because the required accuracy for each of the $K$ entries is much higher.
 Face verification basically is face recognition with $K=1$.
@@ -1447,6 +1448,7 @@ In one-shot learning one learns a distance function $d$
 which given a pair of images outputs a low value if they are from the same person and a high value otherwise.
 Face recognition is performed by comparing the input image with all $K$ images in the database.
 The function $d$ is trained using only one shot of each person.
+Note that it is not required to retrain the algorithm if a new person's face is added to the database.
 
 \subsubsection{Siamese Network}\label{cha:siamese}
 \emph{Taigman et al., 2014, DeepFace closing the gap to human level performance}:
