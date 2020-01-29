@@ -1377,7 +1377,7 @@ while reusing a lot of the computation which is identical between different over
 \subsubsection{Bounding Box Predictions}\label{cha:bbpred}
 The You Only Look Once (YOLO) algorithm divides up the image into a grid (\emph{e.g.} $19\times 19$).
 The training label for an image for example is a $19\times 19\times 8$ (where $8$ is as in \cref{cha:localize}).
-Each grid cell can output a bounding box and object class (or no object).
+\emph{I.e.} for each grid cell there are $8$ output values.
 The bounding box coordinates are specified relative to the cell size.
 Note that $b_w$ and $b_h$ can be bigger than one.
 
