@@ -1362,7 +1362,8 @@ This algorithm is called ``sliding windows detection''.
 
 \subsubsection{Convolutional Implementation of Sliding Windows}\label{cha:cnnslide}
 \emph{Sermanet et al., 2014, OverFeat: Integrated recognition, localization and detection using convolutional networks}:
-One can turn fully connected layers into $1\times 1$ convolutional layers (see \cref{fig:convslide} for an example with 4 classes).
+One can turn fully connected layers into $n\times n$ convolutional layers where $n$ is the width and height of the previous' layer activation
+(see \cref{fig:convslide} for an example with 4 classes).
 Running the same algorithm on the full image instead of the slidding window, one obtains the results for all window positions
 while reusing a lot of the computation which is identical between different overlapping slidding windows.
 \begin{figure}[htbp]
