@@ -1251,7 +1251,7 @@ A residual block uses a skip connection as follows
     z^{[l+1]}&=W^{[l+1]}a^{[l]}+b^{[l+1]}\\
     a^{[l+1]}&=g(z^{[l+1]})\\
     z^{[l+2]}&=W^{[l+2]}a^{[l+1]}+b^{[l+2]}\\
-    a^{[l+2]}&=g(z^{[l+2]}a^{[l]})
+    a^{[l+2]}&=g(z^{[l+2]}+a^{[l]})
   \end{split}
 \end{equation}
 Also see \emph{He et al., 2015, Deep residual networks for image recognition}.
