@@ -1141,7 +1141,7 @@ If layer $l$ is a convolutional layer:
 \end{itemize}
 The input is of size $n^{[l-1]}_H\times n^{[l-1]}_W\times n^{[l-1]}_C$.
 The output and the activations are of size $n^{[l]}_H\times n^{[l]}_W\times n^{[l]}_C$.
-Each filter is of size $f^{[l]}\times f^{[l]}\times n^{[l-1]}_C$.
+Each of the $n^{[l]}$ filters is of size $f^{[l]}\times f^{[l]}\times n^{[l-1]}_C$.
 \begin{equation}
   \begin{split}
     n^{[l]}_H&=\lfloor\frac{n^{[l-1]}_H+2p^{[l]}-f^{[l]}}{s^{[l]}}+1\rfloor\\
@@ -1228,6 +1228,7 @@ The input size is $227\times 227\times 3$.
 It uses $11\times 11$ filters with a stride of $4$, later a $5\times 5$ filter with padding and stride $1$.
 Max-pooling uses $3\times 3$ filters and a stride of $2$ in each case.
 AlexNet uses the ReLU activation function.
+There are five convolutional and three fully connected layers.
 AlexNet as about 160,000,000 parameters and was implemented using multiple GPUs.
 Local Response Normalization is used (but has not become popular).
 
