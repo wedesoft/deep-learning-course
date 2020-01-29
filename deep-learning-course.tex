@@ -1471,7 +1471,7 @@ A triplet consist of the
 \end{itemize}
 The following property is desirable
 \begin{equation}\label{equ:triplet}
-  \underbrace{||f(A)-f(P)||}_{d(A,P)}^2 + \alpha \le \underbrace{||f(A)-f(N)||}_{d(A,N)}^2
+  \underbrace{||f(A)-f(P)||^2}_{d^2(A,P)} + \alpha \le \underbrace{||f(A)-f(N)||^2}_{d^2(A,N)}
 \end{equation}
 where $\alpha>0$ is the margin.
 The loss function $\mathcal{L}$ is defined as
@@ -1482,7 +1482,7 @@ The overall cost function is defined as
 \begin{equation}
   J=\sum_{i=1}^m\mathcal{L}(A^{(i)},P^{(i)},N^{(i)})
 \end{equation}
-For the training set it is necessary to have multiple images of each person.
+For the training set it is necessary to have multiple images of each person (otherwise $A$ and $P$ would be the same picture).
 If A, P, and N are chosen randomly, the condition \cref{equ:triplet} is easily satisfied.
 It is important to choose triplets that are ``hard'' to train on:
 \begin{equation}
