@@ -1122,7 +1122,7 @@ The filter size $f$ usually is an odd number.
 The result of the convolution can be subsampled by applying a stride larger than $1$.
 The size of the output is $\lfloor\frac{n+2p-f}{s}+1\rfloor$.
 Note that in machine learning convolution is actually a cross-correlation.
-Convolution is sometimes preferred in signal processing because it is an associative operation.
+Convolution is sometimes preferred in signal processing because it is an associative operation $(A\ast B)\ast C=A\ast (B\ast C)$.
 
 \subsubsection{Convolutions over Volumes}
 An RGB image with $6\times 6\times 3$ elements gets convolved with a $3\times 3\times 3$ filter.
