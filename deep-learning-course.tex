@@ -1935,6 +1935,7 @@ However typically 3,000 hours of transcribed audio data (or even much more) is u
 Speech recognition algorithms can be trained using the Connectionist temporal classification (CTC) cost.
 The audio input is usually split into small segments (\emph{e.g.} 10 milliseconds).
 Repeated output characters not separated by ``blank'' are collapsed.
+Note that blank and space are different characters.
 \emph{E.g.} ttt\_h\_eee\_\_\_\textvisiblespace\_\_\_qqq\_\_ becomes ``the\textvisiblespace q''.
 The neural network then is allowed to repeat a character many times.
 
