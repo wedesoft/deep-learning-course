@@ -1654,6 +1654,7 @@ one can \emph{e.g.} predict the probability of
 \end{equation}
 
 \subsubsection{Sampling novel sequences}
+The RNN type of the language model is a many-to-many network using the previous word as an input.
 The language model allows you to sample according to the softmax outputs of the RNN.
 In Python one can use np.random.choice.
 The end of the sentence is represented using the $\mathrm{<eos>}$ token.
