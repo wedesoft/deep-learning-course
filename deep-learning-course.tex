@@ -1772,8 +1772,10 @@ The output of the softmax unit is
 \begin{equation}
   p(t|c)=\frac{e^{\theta_t^\top e_c}}{\sum_je^{\theta_j^\top e_c}}
 \end{equation}
+$p(t|c)$ is the probability of the word $t$ occuring in the context of $c$.
 The loss function is $\mathcal{L}(\hat{y},y)=-\sum_iy_i\log\hat{y}_i$.
-$E$ and $\sigma$ are parameters to train.
+$y$ is the one-hot vector of the target word ($y_i$ is $1$ for a single value of $i$ and $0$ otherwise).
+$E$ and $\theta$ are parameters to train.
 In the literature a hierarchical softmax is used for performance reasons.
 The sampling of the context is performed such that frequent words are not sampled much more often than rare words.
 
