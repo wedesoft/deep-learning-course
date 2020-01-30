@@ -1666,6 +1666,7 @@ The disadvantage is that character-level RNNs need to process longer sequences w
 Similar to deep neural networks, RNNs suffer from the vanishing/exploding gradients problem.
 Language has long term dependencies (\emph{e.g.} ``The cat, which ..., was full.'' vs. ``The cats, which ..., were full.'').
 One can handle numerical problems caused by exploding gradients using gradient clipping.
+The following sections show solutions for the vanishing gradients problem.
 
 \subsubsection{Gated Recurrent Unit (GRU)}
 \emph{Chung et al., 2014, Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling}:
