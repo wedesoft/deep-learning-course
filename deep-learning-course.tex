@@ -1626,7 +1626,7 @@ Examples of RNN architectures:
   \item one-to-one (standard neural network)
   \item many-to-many (online/real-time) (\emph{e.g.} name entity recognition)
   \item many-to-one (\emph{e.g.} sentiment analysis)
-  \item one-to-many (\emph{e.g.} music generation)
+  \item one-to-many (\emph{e.g.} music generation, image captioning)
   \item many-to-many (encoder and decoder part) with different input and output sizes (\emph{e.g.} machine translation)
 \end{itemize}
 
@@ -1636,7 +1636,8 @@ The language model is trained using a large corpus of english text.
 A sentence is represented using words and a final token: $y^{<1>}, y^{<2>},\ldots,\mathrm{<eos>}$.
 Unknown words not in the vocabulary are represented using the token $\mathrm{<unk>}$.
 The softmax output of the language RNN outputs the probabilities $\hat{y}^{<1>}$ of the first word.
-Given the first word $y^{<1>}$, it then outputs the probabilities for the second word $\hat{y}^{<2>}$.
+Given the actually chosen first word $y^{<1>}$ and the activations of the previous step,
+it then outputs the probabilities for the second word $\hat{y}^{<2>}$.
 \emph{I.e.} the RNN learns to predict one word at a time.
 The softmax loss function is
 \begin{equation}
