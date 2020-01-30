@@ -1803,6 +1803,7 @@ GloVe minimizes the following model
   \mathrm{minimize\ }\sum_i\sum_jf(X_{ij})(\theta_i^\top e_j + b_i + b_j - \log X_{ij})^2
 \end{equation}
 $f$ is a weighting term. $f$ is zero if $X_{ij}$ is zero.
+$f$ is larger for frequent words.
 Note that $\theta_i$ and $e_j$ are symmetric.
 One can choose the final parameter as follows: $e_w^{(final)}=\frac{e_w+\theta_w}{2}$.
 The algorithm will in general choose axes which are not aligned with the coordinate axes of the vector space.
@@ -1886,7 +1887,7 @@ to check whether beam search or the RNN failed.
 \subsubsection{Bleu score}
 \emph{Papineni et al., 2002, A method for automatic evaluation of machine translation}:
 Language translation often has multiple right answers.
-The bilingual evaluation understudy (Bleu) score.
+Here the bilingual evaluation understudy (Bleu) score can be used.
 Precision $p_1$ counts how many words (unigrams) of the machine translation are present in the reference
 divided by the number of words in the machine translation.
 If a word occurs multiple times in the machine translation, it only scores up to the maximum number of occurences in a reference sentence.
