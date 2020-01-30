@@ -1782,8 +1782,8 @@ The sampling of the context is performed such that frequent words are not sample
 \subsubsection{Negative Sampling}
 \emph{Mikolov et al., 2013, Distributed representation of words and phrases and their compositionality}:
 Negative sampling is a modified learning problem which is much more efficient (no softmax).
-Given a context word $c$, a positive target $t$ (label $1$) in the vincinity is identified
-and $k$ random negative examples for $t$ are also selected (label $0$).
+Given a context word $c$, a positive target $t$ (label $y=1$) in the vincinity is identified
+and $k$ random negative examples for $t$ are also selected (label $y=0$).
 $k$ is small for large datasets and bigger for small datasets.
 The learning problem then is to predict the label given the context and label as input.
 The model is
